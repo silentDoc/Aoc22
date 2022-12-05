@@ -8,13 +8,14 @@ namespace Aoc22
         {
             Program _instance = new Program();
             int day = 1;
+            int part = 2;
 
             switch (day)
             {
                 case 1:
                     //string input = "./Input/day1_1_test.txt";
                     string input = "./Input/day1_1.txt";
-                    var result = _instance.Day1(input);
+                    var result = _instance.Day1(input,part);
                     Console.WriteLine("Result : {0}", result);
                     
                     break;
@@ -26,7 +27,7 @@ namespace Aoc22
             Console.ReadLine();
         }
 
-        int Day1(string input)
+        int Day1(string input, int part)
         {
             List<Elf> elves = new();
 
@@ -49,8 +50,18 @@ namespace Aoc22
                 i++;
             }
 
-            var maxCal = elves.Max(x => x.GetCaloriesCount());
-            return maxCal;
+            if (part == 1)
+            {
+                var maxCal = elves.Max(x => x.GetCaloriesCount());
+                return maxCal;
+            }
+            else
+            {
+                var top3Cal = elves.OrderByDescending(x => x.GetCaloriesCount()).ToList().Take(3);
+                var sumCal = top3Cal.Sum(x => x.GetCaloriesCount());
+                return sumCal;
+            }
+            
 
         }
     }
