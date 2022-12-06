@@ -11,7 +11,7 @@ namespace Aoc22
             int result = -1;
             string resultStr = "";
             int day = 5;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
@@ -163,7 +163,7 @@ namespace Aoc22
 
             for (int i = movesSeparator + 1; i < lines.Count; i++)
             {
-                crates.Move(lines[i]);
+                crates.Move(lines[i], part);
             }
 
             return crates.Status();

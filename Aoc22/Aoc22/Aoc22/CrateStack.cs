@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Aoc22
 {
@@ -30,7 +31,7 @@ namespace Aoc22
             }
         }
 
-        public void Move(string statement)
+        public void Move(string statement, int part = 1)
         {
             // move 1 from 3 to 9
             string patternText = @"\d+";
@@ -38,13 +39,24 @@ namespace Aoc22
             var result = r.Matches(statement);
 
             int howMany = int.Parse(result[0].Value);
-            int from = int.Parse(result[1].Value) -1;
-            int to = int.Parse(result[2].Value) -1;
+            int from = int.Parse(result[1].Value) - 1;
+            int to = int.Parse(result[2].Value) - 1;
 
-            for (int i = 0; i < howMany; i++)
+            if (part == 1)
+                for (int i = 0; i < howMany; i++)
+                {
+                    var element = stacks[from].Pop();
+                    stacks[to].Push(element);
+                }
+            else
             {
-                var element = stacks[from].Pop();
-                stacks[to].Push(element);
+                char[] elements = new char[howMany];
+
+                for (int i = 0; i < howMany; i++)
+                    elements[i] = stacks[from].Pop();
+
+                for (int i = howMany - 1; i >= 0; i--)
+                    stacks[to].Push(elements[i]);
             }
         }
 
