@@ -31,6 +31,10 @@ namespace Aoc22
                     result = _instance.Day3(input, part);
                     Console.WriteLine("Result : {0}", result);
                     break;
+                case 4:
+                    result = _instance.Day4(input, part);
+                    Console.WriteLine("Result : {0}", result);
+                    break;
 
                 default:
                     Console.WriteLine("Bad day ;)");
@@ -124,6 +128,13 @@ namespace Aoc22
             }
 
             return groups.Sum(x => x.GetPriority());
+        }
+
+        int Day4(string input, int part)
+        {
+            var lines = File.ReadLines(input).ToList();
+           
+            return 0;
         }
     }
 }
