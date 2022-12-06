@@ -36,6 +36,10 @@ namespace Aoc22
                     result = _instance.Day4(input, part);
                     Console.WriteLine("Result : {0}", result);
                     break;
+                case 5:
+                    result = _instance.Day5(input, part);
+                    Console.WriteLine("Result : {0}", result);
+                    break;
 
                 default:
                     Console.WriteLine("Bad day ;)");
@@ -143,5 +147,14 @@ namespace Aoc22
                     ? pairs.Where(x => x.FullyContained).Count()
                     : pairs.Where(x => x.Overlap).Count();
         }
+
+        int Day5(string input, int part)
+        {
+            var lines = File.ReadLines(input).ToList();
+
+            return 0;
+        }
+
+
     }
 }
