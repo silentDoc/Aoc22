@@ -51,6 +51,18 @@ namespace Aoc22
             Score = player + result;
         }
 
+        public RockPaperScissor(string line)
+        {
+            var splits = line.Split(' ');
+            handOponent = splits[0];
+            handPlayer = splits[1];
+
+            oponent = PlayTransform(handOponent);
+            player = PlayTransform(handPlayer);
+            result = PlayResult(oponent, player);
+            Score = player + result;
+        }
+
         public override string ToString()
         {
             String ret = "Round : " + handOponent + " vs " + handPlayer + " ;; ";

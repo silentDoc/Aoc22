@@ -22,8 +22,8 @@ namespace Aoc22
                     
                     break;
                 case 2:
-                    input = "./Input/day2_1_test.txt";
-                    //input = "./Input/day2_1.txt";
+                    //input = "./Input/day2_1_test.txt";
+                    input = "./Input/day2_1.txt";
                     result = _instance.Day2(input, part);
                     Console.WriteLine("Result : {0}", result);
                     break;
@@ -75,7 +75,17 @@ namespace Aoc22
 
         int Day2(string input, int part)
         {
-            return 0;
+            var lines = File.ReadLines(input).ToList();
+            List<RockPaperScissor> rounds = new();
+
+            foreach (var line in lines)
+            {
+                RockPaperScissor round = new RockPaperScissor(line);
+                rounds.Add(round);
+            }
+
+            var totalScore = rounds.Sum(x => x.Score);
+            return totalScore;
         }
     }
 }
