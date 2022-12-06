@@ -9,8 +9,9 @@ namespace Aoc22
             Program _instance = new Program();
             string input = "";
             int result = -1;
-            int day = 4;
-            int part = 2;
+            string resultStr = "";
+            int day = 5;
+            int part = 1;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
@@ -37,8 +38,8 @@ namespace Aoc22
                     Console.WriteLine("Result : {0}", result);
                     break;
                 case 5:
-                    result = _instance.Day5(input, part);
-                    Console.WriteLine("Result : {0}", result);
+                    resultStr = _instance.Day5(input, part);
+                    Console.WriteLine("Result : {0}", resultStr);
                     break;
 
                 default:
@@ -148,11 +149,24 @@ namespace Aoc22
                     : pairs.Where(x => x.Overlap).Count();
         }
 
-        int Day5(string input, int part)
+        string Day5(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
+            var movesSeparator = lines.IndexOf("");
+            var stackNumbers = movesSeparator - 1;
+            var stackNumberStrings = lines[stackNumbers].Split(" ",StringSplitOptions.RemoveEmptyEntries);
+            var numberOfStacks = stackNumberStrings.Select(x => int.Parse(x)).Max();
 
-            return 0;
+            CrateStacks crates = new(numberOfStacks, part);
+            for (int i = stackNumbers - 1; i >= 0; i--)
+                crates.AddCrateRow(lines[i]);
+
+            for (int i = movesSeparator + 1; i < lines.Count; i++)
+            {
+                crates.Move(lines[i]);
+            }
+
+            return crates.Status();
         }
 
 
