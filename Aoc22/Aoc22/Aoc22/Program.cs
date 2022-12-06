@@ -41,6 +41,10 @@ namespace Aoc22
                     resultStr = _instance.Day5(input, part);
                     Console.WriteLine("Result : {0}", resultStr);
                     break;
+                case 6:
+                    result = _instance.Day6(input, part);
+                    Console.WriteLine("Result : {0}", result);
+                    break;
 
                 default:
                     Console.WriteLine("Bad day ;)");
@@ -169,6 +173,11 @@ namespace Aoc22
             return crates.Status();
         }
 
+        int Day6(string input, int part)
+        {
+            var lines = File.ReadLines(input).ToList();
+            return 0;
+        }
 
     }
 }

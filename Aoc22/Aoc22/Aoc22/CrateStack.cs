@@ -44,10 +44,7 @@ namespace Aoc22
 
             if (part == 1)
                 for (int i = 0; i < howMany; i++)
-                {
-                    var element = stacks[from].Pop();
-                    stacks[to].Push(element);
-                }
+                    stacks[to].Push(stacks[from].Pop());
             else
             {
                 char[] elements = new char[howMany];
