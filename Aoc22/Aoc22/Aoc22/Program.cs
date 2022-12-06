@@ -15,7 +15,8 @@ namespace Aoc22
 
             input = "./Input/day" + day.ToString() + "_1";
             input += (test) ? "_test.txt" : ".txt";
-
+            
+            Console.WriteLine("AoC 2022 - Day {0} , Part {1} - Test Data {2}", day, part, test);
             switch (day)
             {
                 case 1:
