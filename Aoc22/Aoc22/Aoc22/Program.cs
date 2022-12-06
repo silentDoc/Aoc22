@@ -10,7 +10,7 @@ namespace Aoc22
             string input = "";
             int result = -1;
             int day = 3;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
@@ -96,17 +96,34 @@ namespace Aoc22
         int Day3(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            List<RuckSack> sacks = new();
 
-            foreach (var line in lines)
+            if (part == 1)
             {
-                RuckSack sack = new RuckSack(line, part);
-                sacks.Add(sack);
+                List<RuckSack> sacks = new();
+
+                foreach (var line in lines)
+                {
+                    RuckSack sack = new RuckSack(line, part);
+                    sacks.Add(sack);
+                }
+
+                return sacks.Sum(x => x.Priority);
             }
 
-            var result = sacks.Sum(x => x.Priority);
+            // Part 2 
+            List<RuckSackGroup> groups = new();
+            RuckSackGroup current = new();
+            foreach (var line in lines)
+            {
+                var count = current.AddSack(line);
+                if (count == 3)
+                {
+                    groups.Add(current);
+                    current = new RuckSackGroup();
+                }
+            }
 
-            return result;
+            return groups.Sum(x => x.GetPriority());
         }
     }
 }

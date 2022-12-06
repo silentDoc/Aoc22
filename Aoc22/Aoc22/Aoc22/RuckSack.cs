@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,6 +44,55 @@ namespace Aoc22
                             : (int)(sharedItem - 'a' + 1);
 
         }
+
+    }
+
+    internal class RuckSackGroup
+    {
+        List<string> ruckSacks;
+        char sharedItem;
+
+        public RuckSackGroup()
+        {
+            ruckSacks = new();
+        }
+
+        public int AddSack(string contents)
+        {
+            ruckSacks.Add(contents);
+            return ruckSacks.Count;
+        }
+
+        public int GetPriority()
+        {
+            string allItems = String.Empty;
+            
+            string item1 = ruckSacks[0];
+            string item2 = ruckSacks[1];
+            string item3 = ruckSacks[2];
+
+            allItems = item1 + item2 + item3;
+
+            var duplicateItems = allItems
+                                    .GroupBy(x => x)
+                                    .Where(g => g.Count() > 2)
+                                    .SelectMany(x => x)
+                                    .ToList();
+            
+            sharedItem = duplicateItems
+                                    .Where(x => item1.Contains(x.ToString())
+                                                && item2.Contains(x.ToString())
+                                                && item3.Contains(x.ToString()) )
+                                    .ToList()
+                                    .FirstOrDefault();
+            
+            var priority = (char.IsUpper(sharedItem))
+                            ? (int)(sharedItem - 'A' + 1 + 26)
+                            : (int)(sharedItem - 'a' + 1);
+
+            return priority;
+        }
+
 
     }
 }
