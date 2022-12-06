@@ -7,17 +7,25 @@ namespace Aoc22
         static void Main(string[] args)
         {
             Program _instance = new Program();
-            int day = 1;
-            int part = 2;
+            string input = "";
+            int result = -1;
+            int day = 2;
+            int part = 1;
 
             switch (day)
             {
                 case 1:
-                    //string input = "./Input/day1_1_test.txt";
-                    string input = "./Input/day1_1.txt";
-                    var result = _instance.Day1(input,part);
+                    //input = "./Input/day1_1_test.txt";
+                    input = "./Input/day1_1.txt";
+                    result = _instance.Day1(input,part);
                     Console.WriteLine("Result : {0}", result);
                     
+                    break;
+                case 2:
+                    input = "./Input/day2_1_test.txt";
+                    //input = "./Input/day2_1.txt";
+                    result = _instance.Day2(input, part);
+                    Console.WriteLine("Result : {0}", result);
                     break;
                 default:
                     Console.WriteLine("Bad day ;)");
@@ -63,6 +71,11 @@ namespace Aoc22
             }
             
 
+        }
+
+        int Day2(string input, int part)
+        {
+            return 0;
         }
     }
 }
