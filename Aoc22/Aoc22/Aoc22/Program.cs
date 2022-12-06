@@ -9,27 +9,25 @@ namespace Aoc22
             Program _instance = new Program();
             string input = "";
             int result = -1;
-            int day = 2;
-            int part = 2;
+            int day = 3;
+            int part = 1;
+            bool test = false;
+
+            input = "./Input/day" + day.ToString() + "_1";
+            input += (test) ? "_test.txt" : ".txt";
 
             switch (day)
             {
                 case 1:
-                    //input = "./Input/day1_1_test.txt";
-                    input = "./Input/day1_1.txt";
                     result = _instance.Day1(input,part);
                     Console.WriteLine("Result : {0}", result);
                     
                     break;
                 case 2:
-                    //input = "./Input/day2_1_test.txt";
-                    input = "./Input/day2_1.txt";
                     result = _instance.Day2(input, part);
                     Console.WriteLine("Result : {0}", result);
                     break;
                 case 3:
-                    //input = "./Input/day3_1_test.txt";
-                    input = "./Input/day3_1.txt";
                     result = _instance.Day3(input, part);
                     Console.WriteLine("Result : {0}", result);
                     break;
@@ -98,10 +96,17 @@ namespace Aoc22
         int Day3(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            
+            List<RuckSack> sacks = new();
 
-            var result = 0;
-            return 0;
+            foreach (var line in lines)
+            {
+                RuckSack sack = new RuckSack(line, part);
+                sacks.Add(sack);
+            }
+
+            var result = sacks.Sum(x => x.Priority);
+
+            return result;
         }
     }
 }
