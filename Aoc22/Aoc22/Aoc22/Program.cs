@@ -10,7 +10,7 @@ namespace Aoc22
             string input = "";
             int result = -1;
             int day = 2;
-            int part = 1;
+            int part = 2;
 
             switch (day)
             {
@@ -80,7 +80,7 @@ namespace Aoc22
 
             foreach (var line in lines)
             {
-                RockPaperScissor round = new RockPaperScissor(line);
+                RockPaperScissor round = new RockPaperScissor(line, part);
                 rounds.Add(round);
             }
 

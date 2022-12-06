@@ -40,18 +40,34 @@ namespace Aoc22
             _ => throw new ArgumentException("Invalid values entered : "+ oponent.ToString() + " - " + player.ToString()),
         };
 
-        public RockPaperScissor(string hOponent, string hPlayer)
+        static int PlayResultPart2(int oponent, int player) => (oponent, player) switch
+        {
+            (1, 1) => 3,
+            (1, 2) => 1,
+            (1, 3) => 2,
+            (2, 1) => 1,
+            (2, 2) => 2,
+            (2, 3) => 3,
+            (3, 1) => 2,
+            (3, 2) => 3,
+            (3, 3) => 1,
+            _ => throw new ArgumentException("Invalid values entered : " + oponent.ToString() + " - " + player.ToString()),
+        };
+
+        public RockPaperScissor(string hOponent, string hPlayer, int part = 1)
         {
             handOponent = hOponent;
             handPlayer = hPlayer; 
             
             oponent = PlayTransform(handOponent);
             player = PlayTransform(handPlayer);
+            if(part==2)
+                player = PlayResultPart2(oponent, player);
             result = PlayResult(oponent, player);
             Score = player + result;
         }
 
-        public RockPaperScissor(string line)
+        public RockPaperScissor(string line, int part = 1)
         {
             var splits = line.Split(' ');
             handOponent = splits[0];
@@ -59,6 +75,8 @@ namespace Aoc22
 
             oponent = PlayTransform(handOponent);
             player = PlayTransform(handPlayer);
+            if (part == 2)
+                player = PlayResultPart2(oponent, player);
             result = PlayResult(oponent, player);
             Score = player + result;
         }
