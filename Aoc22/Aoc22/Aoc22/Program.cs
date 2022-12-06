@@ -27,6 +27,13 @@ namespace Aoc22
                     result = _instance.Day2(input, part);
                     Console.WriteLine("Result : {0}", result);
                     break;
+                case 3:
+                    //input = "./Input/day3_1_test.txt";
+                    input = "./Input/day3_1.txt";
+                    result = _instance.Day3(input, part);
+                    Console.WriteLine("Result : {0}", result);
+                    break;
+
                 default:
                     Console.WriteLine("Bad day ;)");
                     break;
@@ -86,6 +93,15 @@ namespace Aoc22
 
             var totalScore = rounds.Sum(x => x.Score);
             return totalScore;
+        }
+
+        int Day3(string input, int part)
+        {
+            var lines = File.ReadLines(input).ToList();
+            
+
+            var result = 0;
+            return 0;
         }
     }
 }
