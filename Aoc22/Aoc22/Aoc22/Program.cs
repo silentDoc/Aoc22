@@ -9,8 +9,8 @@ namespace Aoc22
             Program _instance = new Program();
             string input = "";
             int result = -1;
-            int day = 3;
-            int part = 2;
+            int day = 4;
+            int part = 1;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
@@ -133,8 +133,12 @@ namespace Aoc22
         int Day4(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-           
-            return 0;
+            List<AssignmentPair> pairs = new();
+
+            foreach (var line in lines)
+                pairs.Add(new AssignmentPair(line, part));
+
+            return pairs.Where(x=>x.FullyContained).Count();
         }
     }
 }
