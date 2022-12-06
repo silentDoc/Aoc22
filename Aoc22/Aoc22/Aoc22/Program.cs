@@ -10,8 +10,8 @@ namespace Aoc22
             string input = "";
             int result = -1;
             string resultStr = "";
-            int day = 5;
-            int part = 2;
+            int day = 6;
+            int part = 1;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
@@ -176,7 +176,10 @@ namespace Aoc22
         int Day6(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            return 0;
+            var marker = new SignalProcessor(lines[0], part).Marker;
+
+
+            return marker;
         }
 
     }
