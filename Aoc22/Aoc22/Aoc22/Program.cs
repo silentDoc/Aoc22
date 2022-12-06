@@ -10,7 +10,7 @@ namespace Aoc22
             string input = "";
             int result = -1;
             int day = 4;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
@@ -138,7 +138,9 @@ namespace Aoc22
             foreach (var line in lines)
                 pairs.Add(new AssignmentPair(line, part));
 
-            return pairs.Where(x=>x.FullyContained).Count();
+            return (part == 1)
+                    ? pairs.Where(x => x.FullyContained).Count()
+                    : pairs.Where(x => x.Overlap).Count();
         }
     }
 }

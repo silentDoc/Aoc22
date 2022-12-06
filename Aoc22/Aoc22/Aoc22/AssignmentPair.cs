@@ -14,10 +14,12 @@ namespace Aoc22
         int pair2_stop;
 
         public bool FullyContained;
+        public bool Overlap;
 
         public AssignmentPair(string line, int part)
         {
             FullyContained = false;
+            Overlap = false;
 
             var assingments = line.Split(",");
             var assignment1 = assingments[0].Split("-");
@@ -31,9 +33,13 @@ namespace Aoc22
 
             FullyContained = ((pair1_start <= pair2_start) && (pair1_stop >= pair2_stop))
                              || ((pair2_start <= pair1_start) && (pair2_stop >= pair1_stop));
+
+            Overlap = FullyContained
+                      || ((pair1_start >= pair2_start) && (pair1_start <= pair2_stop))
+                      || ((pair1_stop >= pair2_start) && (pair1_stop <= pair2_stop));
+
+
         }
-
-
 
     }
 }
