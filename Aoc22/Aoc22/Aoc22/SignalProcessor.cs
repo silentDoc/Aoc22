@@ -17,19 +17,21 @@ namespace Aoc22
             Marker = -1;
             Signal = signal;
 
-            Process();
+            Process(part);
         }
 
-        void Process()
+        void Process(int part)
         {
             var foundPosition = -1;
-            for (int i = 0; i < Signal.Length - 4 - 1; i++)
+            var markerLength = (part == 1) ? 4 : 14;
+
+            for (int i = 0; i < Signal.Length - markerLength - 1; i++)
             {
-                var subStr = Signal.Substring(i, 4);
-                if(! (subStr.GroupBy(x=>x).Count() == 4))
+                var subStr = Signal.Substring(i, markerLength);
+                if(! (subStr.GroupBy(x=>x).Count() == markerLength))
                     continue;
 
-                foundPosition = i+4;
+                foundPosition = i+ markerLength;
                 break;
             }
             Marker = foundPosition;

@@ -11,7 +11,7 @@ namespace Aoc22
             int result = -1;
             string resultStr = "";
             int day = 6;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
