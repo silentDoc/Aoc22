@@ -10,8 +10,8 @@ namespace Aoc22
             string input = "";
             int result = -1;
             string resultStr = "";
-            int day = 6;
-            int part = 2;
+            int day = 7;
+            int part = 1;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
@@ -187,8 +187,15 @@ namespace Aoc22
         int Day7(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
+            TerminalParser term = new();
+            term.ParseCommands(lines);
 
-            return 0;
+            int result = -1;
+
+            return (part == 1)
+                ? term.flatListDir.Where(x => x.size < 100000).Sum(x => x.size)
+                : 0;
+
         }
 
     }
