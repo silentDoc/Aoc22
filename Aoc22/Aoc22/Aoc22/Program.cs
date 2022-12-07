@@ -23,7 +23,6 @@ namespace Aoc22
                 case 1:
                     result = _instance.Day1(input,part);
                     Console.WriteLine("Result : {0}", result);
-                    
                     break;
                 case 2:
                     result = _instance.Day2(input, part);
@@ -43,6 +42,10 @@ namespace Aoc22
                     break;
                 case 6:
                     result = _instance.Day6(input, part);
+                    Console.WriteLine("Result : {0}", result);
+                    break;
+                case 7:
+                    result = _instance.Day7(input, part);
                     Console.WriteLine("Result : {0}", result);
                     break;
 
@@ -180,6 +183,12 @@ namespace Aoc22
 
 
             return marker;
+        }
+        int Day7(string input, int part)
+        {
+            var lines = File.ReadLines(input).ToList();
+
+            return 0;
         }
 
     }
