@@ -93,11 +93,14 @@ namespace Aoc22
     {
         List<TerminalDirectory> fileSystem;
         public List<TerminalDirectory> flatListDir;
+        int totalSpace = 70000000;
+        public int availableSpace = -1;
 
 
 
         public TerminalParser()
         {
+            flatListDir = new();
             fileSystem = new();
         }
 
@@ -150,7 +153,7 @@ namespace Aoc22
 
             root.GetSize();
             flatListDir = root.GetFlatList();
-
+            availableSpace = totalSpace - root.size;
         }
 
         bool LineIsCommand(string line)

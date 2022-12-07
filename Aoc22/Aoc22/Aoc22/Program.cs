@@ -11,7 +11,7 @@ namespace Aoc22
             int result = -1;
             string resultStr = "";
             int day = 7;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
@@ -192,9 +192,16 @@ namespace Aoc22
 
             int result = -1;
 
-            return (part == 1)
-                ? term.flatListDir.Where(x => x.size < 100000).Sum(x => x.size)
-                : 0;
+            if (part == 1)
+                return term.flatListDir.Where(x => x.size < 100000).Sum(x => x.size);
+            else
+            {
+                var available = term.availableSpace;
+                var needed = 30000000 - available;
+                var dir = term.flatListDir.Where(x => x.size > needed).OrderBy(x => x.size).FirstOrDefault();
+                return dir.size;
+            }
+            
 
         }
 
