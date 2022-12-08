@@ -11,7 +11,7 @@ namespace Aoc22
             int result = -1;
             string resultStr = "";
             int day = 8;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
@@ -215,7 +215,10 @@ namespace Aoc22
             var lines = File.ReadLines(input).ToList();
             VisibleTreeGrid grid = new(lines);
 
-            var result = grid.HowManyVisibleTrees();
+            var result = (part == 1)
+                            ? grid.HowManyVisibleTrees()
+                            : grid.MaxScore();
+
 
 
             return result;
