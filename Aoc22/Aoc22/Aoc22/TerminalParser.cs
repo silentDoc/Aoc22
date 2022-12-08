@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// TODO - Try to refactor to something less heavy
+
 namespace Aoc22
 {
     enum Commands

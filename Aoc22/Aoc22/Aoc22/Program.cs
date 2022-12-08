@@ -213,9 +213,12 @@ namespace Aoc22
         int Day8(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            return 0;
+            VisibleTreeGrid grid = new(lines);
+
+            var result = grid.HowManyVisibleTrees();
 
 
+            return result;
         }
 
     }
