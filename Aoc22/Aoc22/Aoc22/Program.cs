@@ -10,8 +10,8 @@ namespace Aoc22
             string input = "";
             int result = -1;
             string resultStr = "";
-            int day = 7;
-            int part = 2;
+            int day = 8;
+            int part = 1;
             bool test = false;
 
             input = "./Input/day" + day.ToString() + "_1";
@@ -46,6 +46,10 @@ namespace Aoc22
                     break;
                 case 7:
                     result = _instance.Day7(input, part);
+                    Console.WriteLine("Result : {0}", result);
+                    break;
+                case 8:
+                    result = _instance.Day8(input, part);
                     Console.WriteLine("Result : {0}", result);
                     break;
 
@@ -184,6 +188,7 @@ namespace Aoc22
 
             return marker;
         }
+
         int Day7(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
@@ -202,6 +207,14 @@ namespace Aoc22
                 return dir.size;
             }
             
+
+        }
+
+        int Day8(string input, int part)
+        {
+            var lines = File.ReadLines(input).ToList();
+            return 0;
+
 
         }
 
