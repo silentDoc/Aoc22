@@ -9,7 +9,7 @@ namespace Aoc22
             Program _instance = new Program();
 
             int day = 9;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             string input = "";
@@ -202,7 +202,11 @@ namespace Aoc22
         {
             var lines = File.ReadLines(input).ToList();
             RopeBridge rb = new();
-            rb.DoMoves(lines);
+            
+            if(part==1)
+                rb.DoMoves(lines);
+            else
+                rb.DoMovesP2(lines);
 
             return rb.VisitedPositions();
         }
