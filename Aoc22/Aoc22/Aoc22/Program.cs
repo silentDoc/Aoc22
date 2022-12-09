@@ -8,8 +8,8 @@ namespace Aoc22
         {
             Program _instance = new Program();
 
-            int day = 8;
-            int part = 2;
+            int day = 9;
+            int part = 1;
             bool test = false;
 
             string input = "";
@@ -201,7 +201,10 @@ namespace Aoc22
         int Day9(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            return 0;
+            RopeBridge rb = new();
+            rb.DoMoves(lines);
+
+            return rb.VisitedPositions();
         }
 
     }
