@@ -202,13 +202,9 @@ namespace Aoc22
         {
             var lines = File.ReadLines(input).ToList();
             RopeBridge rb = new();
-            
-            if(part==1)
-                rb.DoMoves(lines);
-            else
-                rb.DoMovesP2(lines);
 
-            return rb.VisitedPositions();
+            return (part == 1) ? rb.DoMoves(lines)
+                               : rb.DoMovesP2(lines);
         }
 
     }

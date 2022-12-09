@@ -30,7 +30,6 @@ namespace Aoc22
                 "U" => new KnotPosition(x, y - 1),
                 _ => throw new ArgumentException("Unknown direction"),
             };
-
     }
 
     internal class KnotPositionComparer : IEqualityComparer<KnotPosition>
@@ -47,7 +46,6 @@ namespace Aoc22
         List<KnotPosition> visitedTailPositions = new();
         KnotPosition head;
         KnotPosition tail;
-
         KnotPosition[] stringP2;
 
         public RopeBridge()
@@ -59,10 +57,9 @@ namespace Aoc22
             stringP2 = new KnotPosition[10];    // 0 - head , 9 - tail
             for (var i = 0; i < 10; i++)
                 stringP2[i] = new();
-
         }
 
-        public void DoMoves(List<string> input)
+        public int DoMoves(List<string> input)
         {
             foreach (var entry in input)
             {
@@ -77,9 +74,10 @@ namespace Aoc22
                     visitedTailPositions.Add(tail);
                 }
             }
+            return visitedTailPositions.Distinct(new KnotPositionComparer()).Count();
         }
 
-        public void DoMovesP2(List<string> input)
+        public int DoMovesP2(List<string> input)
         {
             foreach (var entry in input)
             {
@@ -99,6 +97,7 @@ namespace Aoc22
                     visitedTailPositions.Add(stringP2[9]);
                 }
             }
+            return visitedTailPositions.Distinct(new KnotPositionComparer()).Count();
         }
 
         public Tuple<int, int> SolvePlank(KnotPosition head, KnotPosition tail)
@@ -118,8 +117,5 @@ namespace Aoc22
                              :  (inAxisX) ? new Tuple<int, int>(0, difY/absY)
                                           : new Tuple<int, int>(difX / absX, 0);
         }
-
-        public int VisitedPositions() =>
-                visitedTailPositions.Distinct(new KnotPositionComparer()).Count();
     }
 }
