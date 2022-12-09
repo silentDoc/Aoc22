@@ -9,6 +9,8 @@ using System.Xml.Schema;
 
 namespace Aoc22
 {
+    // TODO - Refactor with c# 8 Range operators : https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/ranges
+
     internal class VisibleTreeGrid
     {
         int[,] treeGrid;

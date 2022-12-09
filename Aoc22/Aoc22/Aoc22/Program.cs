@@ -7,56 +7,33 @@ namespace Aoc22
         static void Main(string[] args)
         {
             Program _instance = new Program();
-            string input = "";
-            int result = -1;
-            string resultStr = "";
+
             int day = 8;
             int part = 2;
             bool test = false;
 
+            string input = "";
             input = "./Input/day" + day.ToString() + "_1";
             input += (test) ? "_test.txt" : ".txt";
             
             Console.WriteLine("AoC 2022 - Day {0} , Part {1} - Test Data {2}", day, part, test);
-            switch (day)
-            {
-                case 1:
-                    result = _instance.Day1(input,part);
-                    Console.WriteLine("Result : {0}", result);
-                    break;
-                case 2:
-                    result = _instance.Day2(input, part);
-                    Console.WriteLine("Result : {0}", result);
-                    break;
-                case 3:
-                    result = _instance.Day3(input, part);
-                    Console.WriteLine("Result : {0}", result);
-                    break;
-                case 4:
-                    result = _instance.Day4(input, part);
-                    Console.WriteLine("Result : {0}", result);
-                    break;
-                case 5:
-                    resultStr = _instance.Day5(input, part);
-                    Console.WriteLine("Result : {0}", resultStr);
-                    break;
-                case 6:
-                    result = _instance.Day6(input, part);
-                    Console.WriteLine("Result : {0}", result);
-                    break;
-                case 7:
-                    result = _instance.Day7(input, part);
-                    Console.WriteLine("Result : {0}", result);
-                    break;
-                case 8:
-                    result = _instance.Day8(input, part);
-                    Console.WriteLine("Result : {0}", result);
-                    break;
+            string strResult;
 
-                default:
-                    Console.WriteLine("Bad day ;)");
-                    break;
-            }
+            strResult = day switch
+            {
+                1 => _instance.Day1(input, part).ToString(),
+                2 => _instance.Day2(input, part).ToString(),
+                3 => _instance.Day3(input, part).ToString(),
+                4 => _instance.Day4(input, part).ToString(),
+                5 => _instance.Day5(input, part),
+                6 => _instance.Day6(input, part).ToString(),
+                7 => _instance.Day7(input, part).ToString(),
+                8 => _instance.Day8(input, part).ToString(),
+                9 => _instance.Day9(input, part).ToString(),
+                _ => throw new ArgumentException("Wrong day number - unimplemented"),
+            };
+            Console.WriteLine("Result : {0}", strResult);
+
             Console.WriteLine("Key to exit");
             Console.ReadLine();
         }
@@ -185,7 +162,6 @@ namespace Aoc22
             var lines = File.ReadLines(input).ToList();
             var marker = new SignalProcessor(lines[0], part).Marker;
 
-
             return marker;
         }
 
@@ -219,9 +195,13 @@ namespace Aoc22
                             ? grid.HowManyVisibleTrees()
                             : grid.MaxScore();
 
-
-
             return result;
+        }
+
+        int Day9(string input, int part)
+        {
+            var lines = File.ReadLines(input).ToList();
+            return 0;
         }
 
     }
