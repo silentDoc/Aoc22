@@ -30,6 +30,7 @@ namespace Aoc22
                 7 => _instance.Day7(input, part).ToString(),
                 8 => _instance.Day8(input, part).ToString(),
                 9 => _instance.Day9(input, part).ToString(),
+                10 => _instance.Day10(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -205,6 +206,12 @@ namespace Aoc22
 
             return (part == 1) ? rb.DoMoves(lines)
                                : rb.DoMovesP2(lines);
+        }
+
+        int Day10(string input, int part)
+        {
+            var lines = File.ReadLines(input).ToList();
+            return 0;
         }
 
     }
