@@ -8,8 +8,8 @@ namespace Aoc22
         {
             Program _instance = new Program();
 
-            int day = 9;
-            int part = 2;
+            int day = 10;
+            int part = 1;
             bool test = false;
 
             string input = "";
@@ -211,7 +211,10 @@ namespace Aoc22
         int Day10(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            return 0;
+            VideoSignalProcessor vsp = new(lines);
+            int[] eval = new int[] { 20, 60, 100, 140, 180, 220 };
+            
+            return vsp.RunInstructions(eval); 
         }
 
     }
