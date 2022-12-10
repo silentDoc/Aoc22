@@ -22,6 +22,7 @@ namespace Aoc22
     internal class VideoSignalProcessor
     {
         List<instruction> instructions = new();
+        char[,] crt = new char[6, 40];
 
         public  VideoSignalProcessor(List<string> instructions) 
         { 
@@ -53,6 +54,7 @@ namespace Aoc22
                 {
                     signalStrength = ++tick * xRegister;
                     signalStrengths.Add(signalStrength);
+                    DrawPixel(tick, xRegister);
                     xValues.Add(xRegister);
                 }
                 // Execute the op
@@ -65,6 +67,26 @@ namespace Aoc22
                 suma += signalStrengths[p - 1];
 
             return suma;
+        }
+
+        void DrawPixel(int tick, int xRegister)
+        {
+            int hor = (tick - 1) % 40;
+            int vert = (tick - 1) / 40;
+            char pixelToDraw = (Math.Abs(hor - xRegister) <= 1) ? '#' : '.';
+            crt[vert, hor] = pixelToDraw;
+        }
+
+        public void DrawCrt()
+        {
+            for (int v = 0; v < 6; v++)
+            {
+                StringBuilder line = new StringBuilder("");
+                for (int h = 0; h < 40; h++)
+                    line.Append(crt[v, h]);
+
+                Console.WriteLine(line.ToString());
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Aoc22
             Program _instance = new Program();
 
             int day = 10;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             string input = "";
@@ -213,8 +213,13 @@ namespace Aoc22
             var lines = File.ReadLines(input).ToList();
             VideoSignalProcessor vsp = new(lines);
             int[] eval = new int[] { 20, 60, 100, 140, 180, 220 };
+            int suma = vsp.RunInstructions(eval);
+
+            if (part == 2)
+                vsp.DrawCrt();
+
+            return suma;
             
-            return vsp.RunInstructions(eval); 
         }
 
     }
