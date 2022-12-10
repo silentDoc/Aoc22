@@ -21,9 +21,9 @@ namespace Aoc22
         public int size;
         List<TerminalDirectory> Subdirectories;
         List<TerminalFile> files;
-        public TerminalDirectory parent;
+        public TerminalDirectory? parent;
 
-        public TerminalDirectory(string name, TerminalDirectory parent = null) 
+        public TerminalDirectory(string name, TerminalDirectory? parent = null) 
         {
             this.name = name;
             size = -1;
@@ -86,7 +86,7 @@ namespace Aoc22
 
     class TerminalLsEntry
     {
-        public string name;
+        public string name = "";
         public int size;
         public bool isDir;
     }

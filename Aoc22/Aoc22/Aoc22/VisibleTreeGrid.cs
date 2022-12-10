@@ -155,7 +155,6 @@ namespace Aoc22
 
         public int MaxScore()
         {
-            int sum = 0;
             List<int> maxims = new();
 
             for (int i = 0; i < height; i++)

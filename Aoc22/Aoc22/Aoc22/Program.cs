@@ -172,8 +172,6 @@ namespace Aoc22
             TerminalParser term = new();
             term.ParseCommands(lines);
 
-            int result = -1;
-
             if (part == 1)
                 return term.flatListDir.Where(x => x.size < 100000).Sum(x => x.size);
             else
@@ -181,6 +179,8 @@ namespace Aoc22
                 var available = term.availableSpace;
                 var needed = 30000000 - available;
                 var dir = term.flatListDir.Where(x => x.size > needed).OrderBy(x => x.size).FirstOrDefault();
+                if (dir == null)
+                    throw new Exception("Something went south");
                 return dir.size;
             }
             
