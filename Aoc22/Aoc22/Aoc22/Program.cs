@@ -29,6 +29,7 @@ namespace Aoc22
                 8 => Day8(input, part).ToString(),
                 9 => Day9(input, part).ToString(),
                 10 =>Day10(input, part).ToString(),
+                11 => Day11(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -217,8 +218,12 @@ namespace Aoc22
                 vsp.DrawCrt();
 
             return suma;
-            
         }
 
+        static int Day11(string input, int part)
+        {
+            var lines = File.ReadLines(input).ToList();
+            return 0;
+        }
     }
 }
