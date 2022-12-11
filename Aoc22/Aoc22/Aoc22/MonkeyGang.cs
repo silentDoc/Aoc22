@@ -56,7 +56,6 @@ namespace Aoc22
             foreach (var i in items)
             {
                 var item = (part==2) ?  i % mcm : i;
-
                 int dest = (item % TestFactor == 0) ? destTrue : destFalse;
                 gang[dest].ReceiveItem(item);
             }
@@ -103,29 +102,8 @@ namespace Aoc22
             return gang.Count();
         }
 
-        private void logWorryLevels()
-        {
-            for (int i = 0; i < gang.Count(); i++)
-            {
-                var lst = gang[i].items;
-                StringBuilder sb = new("");
-                foreach (var x in lst)
-                    sb.Append(x.ToString() + ",");
-
-                Console.WriteLine("Monkey {0} : {1}", i, sb.ToString());
-            }
-        }
-
-        private void logInspections()
-        {
-            for (int i = 0; i < gang.Count(); i++)
-                Console.WriteLine("Monkey {0} has inspected items {1} times", i, gang[i].NumInspections);
-        }
-
         public long MonkeyBusiness(int rounds, int part=1)
         {
-            int[] eval = new int[] { 1, 20, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000 };
-
             // Part 2 - It's tricky, and of course it does not depend on the data types. 
             // We just have to make sure that the items we get KEEP the same divisibilty against all possible tests. 
             // To do so, we will find the minimum common multiple of all the test factors. 
@@ -135,26 +113,12 @@ namespace Aoc22
             foreach (var monkey in gang)
                 mcm *= (long)monkey.TestFactor;
 
-            Console.WriteLine("Mcm is : {0}", mcm);
             for (int i = 0; i < rounds; i++)
-            {
                 gang.ForEach(x => x.Turn(gang, mcm, part));
-               
-                
-                if ( (part==2) && (eval.Contains(i + 1)))
-                {
-                    Console.WriteLine("End of round {0}", i+1);
-                    logInspections();
-                    logWorryLevels();
-                    Console.WriteLine("");
-                }
-            }
-
+     
+            
             var listInspections = gang.Select(x => x.NumInspections).OrderByDescending(x => x).ToList();
-
-            long  check = (long)listInspections[0] * (long)listInspections[1];
-
-            return check;
+            return (long)listInspections[0] * (long)listInspections[1];
         }
     }
 }
