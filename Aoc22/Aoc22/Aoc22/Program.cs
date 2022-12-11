@@ -220,15 +220,14 @@ namespace Aoc22
             return suma;
         }
 
-        static int Day11(string input, int part)
+        static ulong Day11(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             MonkeyGang gang = new();
             int num = gang.SetupGang(lines);
             Console.WriteLine("{0} monkeys in the gang", num);
 
-            return (part == 1) ? gang.MonkeyBusiness(20)
-                : gang.MonkeyBusiness(10000);
+            return gang.MonkeyBusiness((part == 1) ? 20 : 30, part);
         }
     }
 }
