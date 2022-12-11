@@ -6,9 +6,9 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 10;
+            int day = 11;
             int part = 2;
-            bool test = false;
+            bool test = true;
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -223,7 +223,12 @@ namespace Aoc22
         static int Day11(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            return 0;
+            MonkeyGang gang = new();
+            int num = gang.SetupGang(lines);
+            Console.WriteLine("{0} monkeys in the gang", num);
+
+            return (part == 1) ? gang.MonkeyBusiness(20)
+                : gang.MonkeyBusiness(10000);
         }
     }
 }
