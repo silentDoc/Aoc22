@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 
 namespace Aoc22
 {
@@ -8,7 +9,7 @@ namespace Aoc22
         {
             int day = 11;
             int part = 2;
-            bool test = true;
+            bool test = false;
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -220,14 +221,14 @@ namespace Aoc22
             return suma;
         }
 
-        static ulong Day11(string input, int part)
+        static long Day11(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             MonkeyGang gang = new();
             int num = gang.SetupGang(lines);
             Console.WriteLine("{0} monkeys in the gang", num);
 
-            return gang.MonkeyBusiness((part == 1) ? 20 : 30, part);
+            return gang.MonkeyBusiness((part == 1) ? 20 : 10000, part);
         }
     }
 }
