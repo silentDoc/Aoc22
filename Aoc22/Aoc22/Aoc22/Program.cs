@@ -4,15 +4,13 @@ namespace Aoc22
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Program _instance = new Program();
-
             int day = 10;
             int part = 2;
             bool test = false;
 
-            string input = "";
+            string input;
             input = "./Input/day" + day.ToString() + "_1";
             input += (test) ? "_test.txt" : ".txt";
             
@@ -21,16 +19,16 @@ namespace Aoc22
 
             strResult = day switch
             {
-                1 => _instance.Day1(input, part).ToString(),
-                2 => _instance.Day2(input, part).ToString(),
-                3 => _instance.Day3(input, part).ToString(),
-                4 => _instance.Day4(input, part).ToString(),
-                5 => _instance.Day5(input, part),
-                6 => _instance.Day6(input, part).ToString(),
-                7 => _instance.Day7(input, part).ToString(),
-                8 => _instance.Day8(input, part).ToString(),
-                9 => _instance.Day9(input, part).ToString(),
-                10 => _instance.Day10(input, part).ToString(),
+                1 => Day1(input, part).ToString(),
+                2 => Day2(input, part).ToString(),
+                3 => Day3(input, part).ToString(),
+                4 => Day4(input, part).ToString(),
+                5 => Day5(input, part),
+                6 => Day6(input, part).ToString(),
+                7 => Day7(input, part).ToString(),
+                8 => Day8(input, part).ToString(),
+                9 => Day9(input, part).ToString(),
+                10 =>Day10(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -39,7 +37,7 @@ namespace Aoc22
             Console.ReadLine();
         }
 
-        int Day1(string input, int part)
+        static int Day1(string input, int part)
         {
             List<Elf> elves = new();
 
@@ -77,14 +75,14 @@ namespace Aoc22
 
         }
 
-        int Day2(string input, int part)
+        static int Day2(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             List<RockPaperScissor> rounds = new();
 
             foreach (var line in lines)
             {
-                RockPaperScissor round = new RockPaperScissor(line, part);
+                RockPaperScissor round = new(line, part);
                 rounds.Add(round);
             }
 
@@ -92,7 +90,7 @@ namespace Aoc22
             return totalScore;
         }
 
-        int Day3(string input, int part)
+        static int Day3(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
 
@@ -102,7 +100,7 @@ namespace Aoc22
 
                 foreach (var line in lines)
                 {
-                    RuckSack sack = new RuckSack(line, part);
+                    RuckSack sack = new(line, part);
                     sacks.Add(sack);
                 }
 
@@ -125,7 +123,7 @@ namespace Aoc22
             return groups.Sum(x => x.GetPriority());
         }
 
-        int Day4(string input, int part)
+        static int Day4(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             List<AssignmentPair> pairs = new();
@@ -138,7 +136,7 @@ namespace Aoc22
                     : pairs.Where(x => x.Overlap).Count();
         }
 
-        string Day5(string input, int part)
+        static string Day5(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             var movesSeparator = lines.IndexOf("");
@@ -158,7 +156,7 @@ namespace Aoc22
             return crates.Status();
         }
 
-        int Day6(string input, int part)
+        static int Day6(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             var marker = new SignalProcessor(lines[0], part).Marker;
@@ -166,7 +164,7 @@ namespace Aoc22
             return marker;
         }
 
-        int Day7(string input, int part)
+        static int Day7(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             TerminalParser term = new();
@@ -187,7 +185,7 @@ namespace Aoc22
 
         }
 
-        int Day8(string input, int part)
+        static int Day8(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             VisibleTreeGrid grid = new(lines);
@@ -199,7 +197,7 @@ namespace Aoc22
             return result;
         }
 
-        int Day9(string input, int part)
+        static int Day9(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             RopeBridge rb = new();
@@ -208,7 +206,7 @@ namespace Aoc22
                                : rb.DoMovesP2(lines);
         }
 
-        int Day10(string input, int part)
+        static int Day10(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             VideoSignalProcessor vsp = new(lines);
