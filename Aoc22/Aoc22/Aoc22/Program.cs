@@ -7,9 +7,9 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 11;
-            int part = 2;
-            bool test = false;
+            int day = 12;
+            int part = 1;
+            bool test = true;
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -31,6 +31,7 @@ namespace Aoc22
                 9 => Day9(input, part).ToString(),
                 10 =>Day10(input, part).ToString(),
                 11 => Day11(input, part).ToString(),
+                12 => Day12(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -229,6 +230,12 @@ namespace Aoc22
             Console.WriteLine("{0} monkeys in the gang", num);
 
             return gang.MonkeyBusiness((part == 1) ? 20 : 10000, part);
+        }
+
+        static int Day12(string input, int part) 
+        {
+            var lines = File.ReadLines(input).ToList();
+            return 0;
         }
     }
 }
