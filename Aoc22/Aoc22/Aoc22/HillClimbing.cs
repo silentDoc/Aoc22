@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,12 +41,13 @@ namespace Aoc22
         }
 
         public void SetDistance(MapPosition target)
+            //=> Distance = 0;
             => Distance = Math.Abs(target.x - x) + Math.Abs(target.y - y);
 
         public bool Walkable(MapPosition previous)
             => (previous.Value=='S' && Value=='a') 
                || (previous.Value=='z' && Value == 'E')
-               || (Value<= previous.Value+1);
+               || (Value != 'E') && (Value - previous.Value <= 1);
 
         public bool WalkableSafe(MapPosition previous)
         {
@@ -57,11 +60,22 @@ namespace Aoc22
         }
     }
 
+    internal class MapPositionComparer : IEqualityComparer<MapPosition>
+    {
+        public bool Equals(MapPosition? a, MapPosition? b) =>
+            (a is not null && b is not null) ? (a.x == b.x) && (a.y == b.y) : false;
+
+        public int GetHashCode(MapPosition obj) =>
+            (obj.x.ToString() + "x" + obj.y.ToString()).GetHashCode();
+    }
+
     internal class HillClimbing
     {
         List<MapPosition> visitedPositions = new();
         List<MapPosition> allPositions = new();
         List<MapPosition> activePositions = new();
+
+        List<string> outputMap = new();
 
         public int ParseMap(List<string> input)
         { 
@@ -72,13 +86,15 @@ namespace Aoc22
                 for (var i = 0; i < width; i++)
                     allPositions.Add(new MapPosition(i, j, input[j][i]));
 
+            input.ForEach(x => outputMap.Add(new string(x)));
+
             return width * height;
         }
 
         List<MapPosition> getWalkable(MapPosition currentPosition, MapPosition destination)
         {
-            var horList = allPositions.Where(p => (p.y == currentPosition.y) && ((p.x == currentPosition.x + 1) || (p.x == currentPosition.x - 1))).Where(x => x.WalkableSafe(currentPosition)).ToList();
-            var verList = allPositions.Where(p => (p.x == currentPosition.x) && ((p.y == currentPosition.y + 1) || (p.y == currentPosition.y - 1))).Where(x => x.WalkableSafe(currentPosition)).ToList();
+            var horList = allPositions.Where(p => (p.y == currentPosition.y) && ((p.x == currentPosition.x + 1) || (p.x == currentPosition.x - 1))).Where(x => x.Walkable(currentPosition)).ToList();
+            var verList = allPositions.Where(p => (p.x == currentPosition.x) && ((p.y == currentPosition.y + 1) || (p.y == currentPosition.y - 1))).Where(x => x.Walkable(currentPosition)).ToList();
 
             List<MapPosition> walkable = new();
 
@@ -101,11 +117,13 @@ namespace Aoc22
 
             allPositions.ForEach(x => x.SetDistance(destination));
             activePositions.Add(start);
+            
 
             while (activePositions.Any())
             {
-                var check = activePositions.OrderBy(x => x.CostDistance).First();
-                
+                //var check = activePositions.OrderBy(x => x.CostDistance).First();
+                var check = activePositions.OrderByDescending(x => x.CostDistance).Last();
+
                 if (check.IsDestination)
                 {
                     pathFound = true;
@@ -132,7 +150,6 @@ namespace Aoc22
 
                     var existingPosition = activePositions.Where(p => p.x == walk.x && p.y == walk.y).FirstOrDefault();
 
-
                     if (existingPosition != null)
                     {
                         if (existingPosition.CostDistance > walk.CostDistance)
@@ -145,10 +162,55 @@ namespace Aoc22
                         activePositions.Add(walk);
                 }
             }
+
             if (pathFound)
-                path.ForEach(x => Console.WriteLine("{0} , {1}", x.x, x.y));
+            {
+                path.Reverse();
+                int c = 0;
+                path.ForEach(p => outputMap[p.y] = ReplaceAtIndex(p.x, p.Value.ToString().ToUpper()[0], outputMap[p.y]));
+
+                //outputMap.ForEach(x => Console.WriteLine(x));
+                int steps = presentMap();
+                Console.WriteLine(steps.ToString());
+            }
             
-            return (pathFound) ? path.Count-1 : -1;
+            return (pathFound) ? path.Distinct(new MapPositionComparer()).Count()-1 : -1;
         }
+
+        static string ReplaceAtIndex(int index, char value, string line)
+        {
+            char[] letters = line.ToCharArray();
+            letters[index] = value;
+            return string.Join("", letters);
+        }
+
+        int presentMap()
+        {
+            Console.WriteLine();
+            var defFore = Console.ForegroundColor;
+            var defBack = Console.BackgroundColor;
+            int pathSteps = 0;
+            foreach (var l in outputMap)
+            {
+                foreach (char c in l)
+                {
+                    bool isUpper = c.ToString().ToUpper() == c.ToString();
+                    if (isUpper)
+                    {
+                        pathSteps++;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.Yellow;
+                        Console.Write(c);
+                        Console.ForegroundColor = defFore;
+                        Console.BackgroundColor = defBack;
+                    }
+                    else
+                        Console.Write(c);
+                }
+                Console.WriteLine("");
+            }
+            return pathSteps;
+        }
+
     }
 }
