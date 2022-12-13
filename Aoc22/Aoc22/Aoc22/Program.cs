@@ -7,9 +7,9 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 12;
+            int day = 13;
             int part = 1;
-            bool test = false;
+            bool test = true;
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -32,6 +32,7 @@ namespace Aoc22
                 10 =>Day10(input, part).ToString(),
                 11 => Day11(input, part).ToString(),
                 12 => Day12(input, part).ToString(),
+                13 => Day13(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -252,5 +253,10 @@ namespace Aoc22
             hc.ParseMap(lines);
             return hc.FloodMap();*/
         }
-    }
+
+        static int Day13(string input, int part)
+        {
+            var lines = File.ReadLines(input).ToList();
+            return 0;
+        }
 }
