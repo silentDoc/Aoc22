@@ -235,11 +235,22 @@ namespace Aoc22
         static int Day12(string input, int part) 
         {
             var lines = File.ReadLines(input).ToList();
-
+            var inp = File.ReadAllText(input);
             HillClimbing hillClimb = new();
             hillClimb.ParseMap(lines);
-            
+            hillClimb.InvertMap();
+
             return hillClimb.FindRoute();
+
+            /*HillClimbingDijkstra hc = new();
+
+            Solution sol = new();
+            int i = (int) sol.PartOne(inp);
+            Console.WriteLine(i.ToString());
+
+
+            hc.ParseMap(lines);
+            return hc.FloodMap();*/
         }
     }
 }

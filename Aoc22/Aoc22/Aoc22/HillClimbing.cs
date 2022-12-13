@@ -41,34 +41,18 @@ namespace Aoc22
         }
 
         public void SetDistance(MapPosition target)
-            //=> Distance = 0;
-            => Distance = Math.Abs(target.x - x) + Math.Abs(target.y - y);
+            => Distance = 0;
+        //=> Distance = Math.Abs(target.x - x) + Math.Abs(target.y - y);
+
+        public void SetDistance(int distance)
+           => Distance = distance;
 
         public bool Walkable(MapPosition previous)
             => (previous.Value=='S' && Value=='a') 
                || (previous.Value=='z' && Value == 'E')
-               || (Value != 'E') && (Value - previous.Value <= 1);
-
-        public bool WalkableSafe(MapPosition previous)
-        {
-            var c1 = (previous.Value == 'S' && Value == 'a');
-            var c2 = (previous.Value == 'z' && Value == 'E');
-            var c3 = (Value!='E') && (Value <= previous.Value + 1);
-
-            var crit = c1 || c2 || c3;
-            return crit;
-        }
+               || (Value != 'E') && (Value != 'S') && (Value - previous.Value <= 1);
     }
-
-    internal class MapPositionComparer : IEqualityComparer<MapPosition>
-    {
-        public bool Equals(MapPosition? a, MapPosition? b) =>
-            (a is not null && b is not null) ? (a.x == b.x) && (a.y == b.y) : false;
-
-        public int GetHashCode(MapPosition obj) =>
-            (obj.x.ToString() + "x" + obj.y.ToString()).GetHashCode();
-    }
-
+   
     internal class HillClimbing
     {
         List<MapPosition> visitedPositions = new();
@@ -89,6 +73,23 @@ namespace Aoc22
             input.ForEach(x => outputMap.Add(new string(x)));
 
             return width * height;
+        }
+
+        public void InvertMap()
+        {
+            // Invert the map
+            foreach (var pos in allPositions)
+                if (pos.Value != 'S' && pos.Value != 'E')
+                {
+                    var x = pos.Value;
+                    pos.Value = (char)((int)'z' - (int)pos.Value + (int)'a');
+                }
+
+            var startNode = allPositions.Where(x => x.IsStart).First();
+            var endNode = allPositions.Where(x => x.IsDestination).First();
+
+            startNode.Value = 'E';
+            endNode.Value = 'S';
         }
 
         List<MapPosition> getWalkable(MapPosition currentPosition, MapPosition destination)
@@ -115,14 +116,15 @@ namespace Aoc22
             List<MapPosition> path = new();
             bool pathFound = false;
 
-            allPositions.ForEach(x => x.SetDistance(destination));
+            allPositions.ForEach(x => x.Cost = int.MaxValue);
+            start.Cost = 0;
             activePositions.Add(start);
             
 
             while (activePositions.Any())
             {
                 //var check = activePositions.OrderBy(x => x.CostDistance).First();
-                var check = activePositions.OrderByDescending(x => x.CostDistance).Last();
+                var check = activePositions.OrderByDescending(x => x.Cost).Last();
 
                 if (check.IsDestination)
                 {
@@ -152,7 +154,7 @@ namespace Aoc22
 
                     if (existingPosition != null)
                     {
-                        if (existingPosition.CostDistance > walk.CostDistance)
+                        if (existingPosition.Cost > walk.Cost)
                         {
                             activePositions.Remove(existingPosition);
                             activePositions.Add(walk);
@@ -165,8 +167,9 @@ namespace Aoc22
 
             if (pathFound)
             {
+                Trace.WriteLine((path.Where(p => p.IsDestination).Select(x => x.Cost).Single().ToString()));
+
                 path.Reverse();
-                int c = 0;
                 path.ForEach(p => outputMap[p.y] = ReplaceAtIndex(p.x, p.Value.ToString().ToUpper()[0], outputMap[p.y]));
 
                 //outputMap.ForEach(x => Console.WriteLine(x));
@@ -174,7 +177,7 @@ namespace Aoc22
                 Console.WriteLine(steps.ToString());
             }
             
-            return (pathFound) ? path.Distinct(new MapPositionComparer()).Count()-1 : -1;
+            return (pathFound) ? path.Count-1 : -1;
         }
 
         static string ReplaceAtIndex(int index, char value, string line)
