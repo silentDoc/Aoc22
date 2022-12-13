@@ -14,7 +14,7 @@ namespace Aoc22
             string input;
             input = "./Input/day" + day.ToString() + "_1";
             input += (test) ? "_test.txt" : ".txt";
-            
+
             Console.WriteLine("AoC 2022 - Day {0} , Part {1} - Test Data {2}", day, part, test);
             string strResult;
 
@@ -29,7 +29,7 @@ namespace Aoc22
                 7 => Day7(input, part).ToString(),
                 8 => Day8(input, part).ToString(),
                 9 => Day9(input, part).ToString(),
-                10 =>Day10(input, part).ToString(),
+                10 => Day10(input, part).ToString(),
                 11 => Day11(input, part).ToString(),
                 12 => Day12(input, part).ToString(),
                 13 => Day13(input, part).ToString(),
@@ -46,9 +46,9 @@ namespace Aoc22
             List<Elf> elves = new();
 
             var lines = File.ReadLines(input).ToList();
-            
+
             var i = 0;
-            
+
             Elf currentElf = new();
             while (i < lines.Count)
             {
@@ -75,7 +75,7 @@ namespace Aoc22
                 var sumCal = top3Cal.Sum(x => x.GetCaloriesCount());
                 return sumCal;
             }
-            
+
 
         }
 
@@ -145,7 +145,7 @@ namespace Aoc22
             var lines = File.ReadLines(input).ToList();
             var movesSeparator = lines.IndexOf("");
             var stackNumbers = movesSeparator - 1;
-            var stackNumberStrings = lines[stackNumbers].Split(" ",StringSplitOptions.RemoveEmptyEntries);
+            var stackNumberStrings = lines[stackNumbers].Split(" ", StringSplitOptions.RemoveEmptyEntries);
             var numberOfStacks = stackNumberStrings.Select(x => int.Parse(x)).Max();
 
             CrateStacks crates = new(numberOfStacks, part);
@@ -185,7 +185,7 @@ namespace Aoc22
                     throw new Exception("Something went south");
                 return dir.size;
             }
-            
+
 
         }
 
@@ -233,7 +233,7 @@ namespace Aoc22
             return gang.MonkeyBusiness((part == 1) ? 20 : 10000, part);
         }
 
-        static int Day12(string input, int part) 
+        static int Day12(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
             var inp = File.ReadAllText(input);
@@ -259,4 +259,5 @@ namespace Aoc22
             var lines = File.ReadLines(input).ToList();
             return 0;
         }
+    }
 }
