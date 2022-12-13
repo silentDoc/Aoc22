@@ -74,6 +74,7 @@ namespace Aoc22
 
             return width * height;
         }
+       
 
         public void InvertMap()
         {

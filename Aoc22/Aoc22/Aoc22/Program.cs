@@ -9,7 +9,7 @@ namespace Aoc22
         {
             int day = 13;
             int part = 1;
-            bool test = true;
+            bool test = false;
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -236,28 +236,17 @@ namespace Aoc22
         static int Day12(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            var inp = File.ReadAllText(input);
             HillClimbing hillClimb = new();
             hillClimb.ParseMap(lines);
             hillClimb.InvertMap();
 
             return hillClimb.FindRoute();
-
-            /*HillClimbingDijkstra hc = new();
-
-            Solution sol = new();
-            int i = (int) sol.PartOne(inp);
-            Console.WriteLine(i.ToString());
-
-
-            hc.ParseMap(lines);
-            return hc.FloodMap();*/
         }
 
         static int Day13(string input, int part)
         {
-            var lines = File.ReadLines(input).ToList();
-            return 0;
+            string[] lines = File.ReadAllLines(input);
+            return new SignalOrderChecker().Part1(lines);
         }
     }
 }
