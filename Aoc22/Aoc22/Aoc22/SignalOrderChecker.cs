@@ -52,6 +52,38 @@ namespace Aoc22
             return sum;
         }
 
+        public int Part2(string[] input)
+        {
+            var items = new List<Item>();
+            var inputIndex = 0;
+
+            // Parse input
+            while (inputIndex < input.Length)
+            {
+                var inputLine = input[inputIndex++];
+                if (inputLine.Length == 0)
+                    continue;
+
+                items.Add(Parse(inputLine));
+            }
+
+            // Dividers
+            IntItem i = new IntItem() { Val = 2 };
+            ListItem li = new ListItem() { Val = new List<Item>() { i } };
+            ListItem a = new ListItem() { Val = new List<Item>() { li } };
+
+            IntItem ii = new IntItem() { Val = 6};
+            ListItem lii = new ListItem() { Val = new List<Item>() { ii } };
+            ListItem b = new ListItem() { Val = new List<Item>() { lii } }; 
+
+            items.Add(a);
+            items.Add(b);
+
+            items.Sort(Compare);    // I love linq
+
+            return (items.IndexOf(a) + 1) * (items.IndexOf(b) + 1);
+        }
+
         Item Parse(string line)
         {
             List<Item> items = new();

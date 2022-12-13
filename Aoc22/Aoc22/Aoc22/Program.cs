@@ -8,7 +8,7 @@ namespace Aoc22
         static void Main()
         {
             int day = 13;
-            int part = 1;
+            int part = 2;
             bool test = false;
 
             string input;
@@ -246,7 +246,8 @@ namespace Aoc22
         static int Day13(string input, int part)
         {
             string[] lines = File.ReadAllLines(input);
-            return new SignalOrderChecker().Part1(lines);
+            return (part==1) ? new SignalOrderChecker().Part1(lines)
+                             : new SignalOrderChecker().Part2(lines);
         }
     }
 }
