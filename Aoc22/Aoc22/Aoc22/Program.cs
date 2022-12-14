@@ -33,6 +33,7 @@ namespace Aoc22
                 11 => Day11(input, part).ToString(),
                 12 => Day12(input, part).ToString(),
                 13 => Day13(input, part).ToString(),
+                14 => Day14(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -248,6 +249,12 @@ namespace Aoc22
             string[] lines = File.ReadAllLines(input);
             return (part==1) ? new SignalOrderChecker().Part1(lines)
                              : new SignalOrderChecker().Part2(lines);
+        }
+
+        static int Day14(string input, int part)
+        {
+            List<string> lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
