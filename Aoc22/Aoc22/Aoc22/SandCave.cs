@@ -33,7 +33,7 @@ namespace Aoc22
             if (withFloor)
             {
                 max_y += 2;
-                int maxWide = (max_y * 2 + 10) / 2;
+                int maxWide = (max_y * 2);
                 int centralPoint = min_x + (max_x - min_x) / 2;
                 min_x = centralPoint - maxWide;
                 max_x = centralPoint + maxWide;
@@ -56,25 +56,6 @@ namespace Aoc22
             if (withFloor)
                 for (int i = min_x; i <= max_x; i++)
                     SetRock(new Coord() { x = i, y = max_y });
-        }
-
-        public SandCaveMap(SandCaveMap otherSandCaveMap)
-        {
-            // Find Max and min Coords
-            max_x = otherSandCaveMap.max_x;
-            max_y = otherSandCaveMap.max_y;
-            min_x = otherSandCaveMap.min_x;
-            min_y = otherSandCaveMap.min_y; 
-
-            rangeX = max_x - min_x + 1;
-
-            actualMap = new();
-            for (int i = 0; i <= max_y; i++)
-                actualMap.Add(new char[rangeX]);
-
-            foreach (var line in actualMap)
-                for (int i = 0; i < line.Length; i++)
-                    line[i] = otherSandCaveMap.GetPos(new Coord() {x = i+min_x, y = actualMap.IndexOf(line) });
         }
 
         void SetTrail(List<Coord> trail)
@@ -179,7 +160,7 @@ namespace Aoc22
                 RockTrails.Add(ParseLine(line));
             this.part = part;
             sandCave = new(RockTrails , (part == 2));
-            sandCave.Log();
+            //sandCave.Log();
 
             return RockTrails.Count;
         }
@@ -231,6 +212,12 @@ namespace Aoc22
                     {
                         // Get back to starting position
                         rest++;
+                        if (part == 2)
+                        {
+                            if ((currentCoord.x == startCoord.x) &&
+                                 (currentCoord.y == startCoord.y))
+                                return rest;
+                        }
                         currentCoord = startCoord;
                     }
                     //Thread.Sleep(50);
@@ -239,6 +226,7 @@ namespace Aoc22
             }
             catch (IndexOutOfRangeException ex)
             {
+                sandCave.Log();
                 return rest;
             }
            

@@ -9,7 +9,7 @@ namespace Aoc22
         {
             int day = 14;
             int part = 2;
-            bool test = true;   // True - test input, False = Real input
+            bool test = false;   // True - test input, False = Real input
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -258,7 +258,7 @@ namespace Aoc22
             
             sc.ParseInput(lines, part);
             
-            return (part==1) ? sc.Fill() :0; 
+            return sc.Fill(); 
         }
     }
 }
