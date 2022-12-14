@@ -7,9 +7,9 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 13;
+            int day = 14;
             int part = 2;
-            bool test = false;
+            bool test = true;   // True - test input, False = Real input
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -254,7 +254,11 @@ namespace Aoc22
         static int Day14(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
-            return 0;
+            SandCave sc = new();
+            
+            sc.ParseInput(lines, part);
+            
+            return (part==1) ? sc.Fill() :0; 
         }
     }
 }
