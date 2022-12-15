@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Aoc22
+namespace Aoc22.Day05
 {
     internal class CrateStacks
     {
@@ -70,12 +70,27 @@ namespace Aoc22
             }
             return result;
         }
+    }
 
+    public class CrateStackSolver
+    {
+        public string Solve(List<string> lines, int part)
+        {
+            var movesSeparator = lines.IndexOf("");
+            var stackNumbers = movesSeparator - 1;
+            var stackNumberStrings = lines[stackNumbers].Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            var numberOfStacks = stackNumberStrings.Select(x => int.Parse(x)).Max();
 
+            CrateStacks crates = new(numberOfStacks, part);
+            for (int i = stackNumbers - 1; i >= 0; i--)
+                crates.AddCrateRow(lines[i]);
 
+            for (int i = movesSeparator + 1; i < lines.Count; i++)
+            {
+                crates.Move(lines[i], part);
+            }
 
-
-
-
+            return crates.Status();
+        }
     }
 }

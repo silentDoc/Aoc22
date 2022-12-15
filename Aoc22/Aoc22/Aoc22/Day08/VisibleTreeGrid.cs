@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 
-namespace Aoc22
+namespace Aoc22.Day08
 {
     // TODO - Refactor with c# 8 Range operators : https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/ranges
 
@@ -53,18 +53,18 @@ namespace Aoc22
             for (var i = 0; i < height; i++)
             {
                 visibilityGrid[0][i] = 1;
-                visibilityGrid[width-1][i] = 1;
+                visibilityGrid[width - 1][i] = 1;
             }
             for (var j = 0; j < width; j++)
             {
                 visibilityGrid[j][0] = 1;
-                visibilityGrid[j][height-1] = 1;
+                visibilityGrid[j][height - 1] = 1;
             }
 
             // Inside
-            for (var i = 1; i < height-1; i++)
-                for (var j = 1; j < width-1; j++)
-                    visibilityGrid[j][i] = (treeGrid[i, j] > minOcclusion(i,j)) ? 1 : 0;
+            for (var i = 1; i < height - 1; i++)
+                for (var j = 1; j < width - 1; j++)
+                    visibilityGrid[j][i] = treeGrid[i, j] > minOcclusion(i, j) ? 1 : 0;
         }
 
         void CalcScore()
@@ -81,14 +81,14 @@ namespace Aoc22
             int minHeight = 999;
             int tempMax = -1;
 
-          
-            for(int k = 0; k < i; k++)
+
+            for (int k = 0; k < i; k++)
                 tempMax = Math.Max(tempMax, treeGrid[k, j]);
-            
+
             minHeight = Math.Min(minHeight, tempMax);
             tempMax = -1;
 
-            for (int k = i+1; k < width; k++)
+            for (int k = i + 1; k < width; k++)
                 tempMax = Math.Max(tempMax, treeGrid[k, j]);
             minHeight = Math.Min(minHeight, tempMax);
             tempMax = -1;
@@ -138,7 +138,7 @@ namespace Aoc22
                 scores[3]++;
                 if (treeGrid[i, k] >= current) break;
             }
-            
+
             var score = scores[0] * scores[1] * scores[2] * scores[3];
 
             return score;

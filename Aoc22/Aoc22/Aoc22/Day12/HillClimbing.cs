@@ -6,16 +6,16 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aoc22
+namespace Aoc22.Day12
 {
     class MapPosition
     {
         public int x, y;
-        public Char Value;
+        public char Value;
         private int Distance;
         public int Cost;
         public MapPosition? Previous;
-        
+
         public bool IsDestination => Value == 'E';
         public bool IsStart => Value == 'S';
         public int CostDistance => Cost + Distance;
@@ -26,18 +26,18 @@ namespace Aoc22
             this.y = y;
             Cost = 0;
             Distance = 0;
-            this.Value = value;
+            Value = value;
             Previous = previous;
         }
 
         public MapPosition(MapPosition mapPosition)
         {
-            this.x = mapPosition.x;
-            this.y = mapPosition.y;
-            this.Cost = mapPosition.Cost;
-            this.Distance = mapPosition.Distance;
-            this.Value = mapPosition.Value;
-            this.Previous = mapPosition.Previous;
+            x = mapPosition.x;
+            y = mapPosition.y;
+            Cost = mapPosition.Cost;
+            Distance = mapPosition.Distance;
+            Value = mapPosition.Value;
+            Previous = mapPosition.Previous;
         }
 
         public void SetDistance(MapPosition target)
@@ -48,11 +48,11 @@ namespace Aoc22
            => Distance = distance;
 
         public bool Walkable(MapPosition previous)
-            => (previous.Value=='S' && Value=='a') 
-               || (previous.Value=='z' && Value == 'E')
-               || (Value != 'E') && (Value != 'S') && (Value - previous.Value <= 1);
+            => previous.Value == 'S' && Value == 'a'
+               || previous.Value == 'z' && Value == 'E'
+               || Value != 'E' && Value != 'S' && Value - previous.Value <= 1;
     }
-   
+
     internal class HillClimbing
     {
         List<MapPosition> visitedPositions = new();
@@ -62,7 +62,7 @@ namespace Aoc22
         List<string> outputMap = new();
 
         public int ParseMap(List<string> input)
-        { 
+        {
             var width = input[0].Length;
             var height = input.Count;
 
@@ -74,7 +74,7 @@ namespace Aoc22
 
             return width * height;
         }
-       
+
 
         public void InvertMap()
         {
@@ -83,7 +83,7 @@ namespace Aoc22
                 if (pos.Value != 'S' && pos.Value != 'E')
                 {
                     var x = pos.Value;
-                    pos.Value = (char)((int)'z' - (int)pos.Value + (int)'a');
+                    pos.Value = (char)('z' - pos.Value + 'a');
                 }
 
             var startNode = allPositions.Where(x => x.IsStart).First();
@@ -95,8 +95,8 @@ namespace Aoc22
 
         List<MapPosition> getWalkable(MapPosition currentPosition, MapPosition destination)
         {
-            var horList = allPositions.Where(p => (p.y == currentPosition.y) && ((p.x == currentPosition.x + 1) || (p.x == currentPosition.x - 1))).Where(x => x.Walkable(currentPosition)).ToList();
-            var verList = allPositions.Where(p => (p.x == currentPosition.x) && ((p.y == currentPosition.y + 1) || (p.y == currentPosition.y - 1))).Where(x => x.Walkable(currentPosition)).ToList();
+            var horList = allPositions.Where(p => p.y == currentPosition.y && (p.x == currentPosition.x + 1 || p.x == currentPosition.x - 1)).Where(x => x.Walkable(currentPosition)).ToList();
+            var verList = allPositions.Where(p => p.x == currentPosition.x && (p.y == currentPosition.y + 1 || p.y == currentPosition.y - 1)).Where(x => x.Walkable(currentPosition)).ToList();
 
             List<MapPosition> walkable = new();
 
@@ -104,7 +104,7 @@ namespace Aoc22
             verList.ForEach(x => walkable.Add(new MapPosition(x)));
 
             walkable.ForEach(x => x.Previous = currentPosition);
-            walkable.ForEach(x => x.Cost = currentPosition.Cost+1);
+            walkable.ForEach(x => x.Cost = currentPosition.Cost + 1);
             walkable.ForEach(x => x.SetDistance(destination));
             return walkable;
         }
@@ -120,7 +120,7 @@ namespace Aoc22
             allPositions.ForEach(x => x.Cost = int.MaxValue);
             start.Cost = 0;
             activePositions.Add(start);
-            
+
 
             while (activePositions.Any())
             {
@@ -168,7 +168,7 @@ namespace Aoc22
 
             if (pathFound)
             {
-                Trace.WriteLine((path.Where(p => p.IsDestination).Select(x => x.Cost).Single().ToString()));
+                Trace.WriteLine(path.Where(p => p.IsDestination).Select(x => x.Cost).Single().ToString());
 
                 path.Reverse();
                 path.ForEach(p => outputMap[p.y] = ReplaceAtIndex(p.x, p.Value.ToString().ToUpper()[0], outputMap[p.y]));
@@ -177,8 +177,8 @@ namespace Aoc22
                 int steps = presentMap();
                 Console.WriteLine(steps.ToString());
             }
-            
-            return (pathFound) ? path.Count-1 : -1;
+
+            return pathFound ? path.Count - 1 : -1;
         }
 
         static string ReplaceAtIndex(int index, char value, string line)

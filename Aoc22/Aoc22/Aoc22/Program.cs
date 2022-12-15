@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 
+
 namespace Aoc22
 {
     internal class Program
@@ -16,79 +17,47 @@ namespace Aoc22
             input += (test) ? "_test.txt" : ".txt";
 
             Console.WriteLine("AoC 2022 - Day {0} , Part {1} - Test Data {2}", day, part, test);
-            string strResult;
 
-            strResult = day switch
+            var strResult = day switch
             {
-                1 => Day1(input, part).ToString(),
-                2 => Day2(input, part).ToString(),
-                3 => Day3(input, part).ToString(),
-                4 => Day4(input, part).ToString(),
-                5 => Day5(input, part),
-                6 => Day6(input, part).ToString(),
-                7 => Day7(input, part).ToString(),
-                8 => Day8(input, part).ToString(),
-                9 => Day9(input, part).ToString(),
-                10 => Day10(input, part).ToString(),
-                11 => Day11(input, part).ToString(),
-                12 => Day12(input, part).ToString(),
-                13 => Day13(input, part).ToString(),
-                14 => Day14(input, part).ToString(),
-                15 => Day15(input, part).ToString(),
+                1 => day1(input, part).ToString(),
+                2 => day2(input, part).ToString(),
+                3 => day3(input, part).ToString(),
+                4 => day4(input, part).ToString(),
+                5 => day5(input, part).ToString(),
+                6 => day6(input, part).ToString(),
+                7 => day7(input, part).ToString(),
+                8 => day8(input, part).ToString(),
+                9 => day9(input, part).ToString(),
+                10 => day10(input, part).ToString(),
+                11 => day11(input, part).ToString(),
+                12 => day12(input, part).ToString(),
+                13 => day13(input, part).ToString(),
+                14 => day14(input, part).ToString(),
+                15 => day15(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
-
             Console.WriteLine("Key to exit");
             Console.ReadLine();
         }
 
-        static int Day1(string input, int part)
+        static int day1(string input, int part)
         {
-            List<Elf> elves = new();
-
             var lines = File.ReadLines(input).ToList();
-
-            var i = 0;
-
-            Elf currentElf = new();
-            while (i < lines.Count)
-            {
-                if (string.IsNullOrEmpty(lines[i]))
-                {
-                    elves.Add(currentElf);
-                    currentElf = new();
-                    i++;
-                    continue;
-                }
-
-                currentElf.AddCalories(int.Parse(lines[i]));
-                i++;
-            }
-
-            if (part == 1)
-            {
-                var maxCal = elves.Max(x => x.GetCaloriesCount());
-                return maxCal;
-            }
-            else
-            {
-                var top3Cal = elves.OrderByDescending(x => x.GetCaloriesCount()).ToList().Take(3);
-                var sumCal = top3Cal.Sum(x => x.GetCaloriesCount());
-                return sumCal;
-            }
-
-
+            Day01.ElvenGroup group = new();
+            group.ParseInput(lines);
+            return group.Solve(part);
         }
 
-        static int Day2(string input, int part)
+        static int day2(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            List<RockPaperScissor> rounds = new();
+            List<Day02.RockPaperScissor> rounds = new();
 
             foreach (var line in lines)
             {
-                RockPaperScissor round = new(line, part);
+                Day02.RockPaperScissor round = new(line, part);
                 rounds.Add(round);
             }
 
@@ -96,126 +65,68 @@ namespace Aoc22
             return totalScore;
         }
 
-        static int Day3(string input, int part)
+        static int day3(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-
-            if (part == 1)
-            {
-                List<RuckSack> sacks = new();
-
-                foreach (var line in lines)
-                {
-                    RuckSack sack = new(line, part);
-                    sacks.Add(sack);
-                }
-
-                return sacks.Sum(x => x.Priority);
-            }
-
-            // Part 2 
-            List<RuckSackGroup> groups = new();
-            RuckSackGroup current = new();
-            foreach (var line in lines)
-            {
-                var count = current.AddSack(line);
-                if (count == 3)
-                {
-                    groups.Add(current);
-                    current = new RuckSackGroup();
-                }
-            }
-
-            return groups.Sum(x => x.GetPriority());
+            return new Day03.RuckSackSolver().Solve(lines, part);
         }
 
-        static int Day4(string input, int part)
+        static int day4(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            List<AssignmentPair> pairs = new();
+            List<Day04.AssignmentPair> pairs = new();
 
             foreach (var line in lines)
-                pairs.Add(new AssignmentPair(line, part));
+                pairs.Add(new Day04.AssignmentPair(line, part));
 
             return (part == 1)
                     ? pairs.Where(x => x.FullyContained).Count()
                     : pairs.Where(x => x.Overlap).Count();
         }
 
-        static string Day5(string input, int part)
+        static string day5(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            var movesSeparator = lines.IndexOf("");
-            var stackNumbers = movesSeparator - 1;
-            var stackNumberStrings = lines[stackNumbers].Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            var numberOfStacks = stackNumberStrings.Select(x => int.Parse(x)).Max();
-
-            CrateStacks crates = new(numberOfStacks, part);
-            for (int i = stackNumbers - 1; i >= 0; i--)
-                crates.AddCrateRow(lines[i]);
-
-            for (int i = movesSeparator + 1; i < lines.Count; i++)
-            {
-                crates.Move(lines[i], part);
-            }
-
-            return crates.Status();
+            return new Day05.CrateStackSolver().Solve(lines, part);
         }
 
-        static int Day6(string input, int part)
+        static int day6(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            var marker = new SignalProcessor(lines[0], part).Marker;
-
-            return marker;
+            return new Day06.SignalProcessor(lines[0], part).Marker;
         }
 
-        static int Day7(string input, int part)
+        static int day7(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            TerminalParser term = new();
-            term.ParseCommands(lines);
-
-            if (part == 1)
-                return term.flatListDir.Where(x => x.size < 100000).Sum(x => x.size);
-            else
-            {
-                var available = term.availableSpace;
-                var needed = 30000000 - available;
-                var dir = term.flatListDir.Where(x => x.size > needed).OrderBy(x => x.size).FirstOrDefault();
-                if (dir == null)
-                    throw new Exception("Something went south");
-                return dir.size;
-            }
-
-
+            Day07.TerminalParser term = new();
+            return term.Solve(lines, part);
         }
 
-        static int Day8(string input, int part)
+        static int day8(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            VisibleTreeGrid grid = new(lines);
+            Day08.VisibleTreeGrid grid = new(lines);
 
-            var result = (part == 1)
+            return (part == 1)
                             ? grid.HowManyVisibleTrees()
                             : grid.MaxScore();
 
-            return result;
         }
 
-        static int Day9(string input, int part)
+        static int day9(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            RopeBridge rb = new();
+            Day09.RopeBridge rb = new();
 
             return (part == 1) ? rb.DoMoves(lines)
                                : rb.DoMovesP2(lines);
         }
 
-        static int Day10(string input, int part)
+        static int day10(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            VideoSignalProcessor vsp = new(lines);
+            Day10.VideoSignalProcessor vsp = new(lines);
             int[] eval = new int[] { 20, 60, 100, 140, 180, 220 };
             int suma = vsp.RunInstructions(eval);
 
@@ -225,44 +136,40 @@ namespace Aoc22
             return suma;
         }
 
-        static long Day11(string input, int part)
+        static long day11(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            MonkeyGang gang = new();
+            Day11.MonkeyGang gang = new();
             int num = gang.SetupGang(lines);
-            Console.WriteLine("{0} monkeys in the gang", num);
-
             return gang.MonkeyBusiness((part == 1) ? 20 : 10000, part);
         }
 
-        static int Day12(string input, int part)
+        static int day12(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            HillClimbing hillClimb = new();
+            Day12.HillClimbing hillClimb = new();
             hillClimb.ParseMap(lines);
             hillClimb.InvertMap();
 
             return hillClimb.FindRoute();
         }
 
-        static int Day13(string input, int part)
+        static int day13(string input, int part)
         {
             string[] lines = File.ReadAllLines(input);
-            return (part==1) ? new SignalOrderChecker().Part1(lines)
-                             : new SignalOrderChecker().Part2(lines);
+            return (part==1) ? new Day13.SignalOrderChecker().Part1(lines)
+                             : new Day13.SignalOrderChecker().Part2(lines);
         }
 
-        static int Day14(string input, int part)
+        static int day14(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
-            SandCave sc = new();
-            
+            Day14.SandCave sc = new();
             sc.ParseInput(lines, part);
-            
             return sc.Fill(); 
         }
 
-        static int Day15(string input, int part)
+        static int day15(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
             return 0;

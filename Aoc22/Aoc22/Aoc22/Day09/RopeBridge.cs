@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aoc22
+namespace Aoc22.Day09
 {
     internal class KnotPosition
     {
@@ -35,7 +35,7 @@ namespace Aoc22
     internal class KnotPositionComparer : IEqualityComparer<KnotPosition>
     {
         public bool Equals(KnotPosition? a, KnotPosition? b) =>
-            (a is not null && b is not null) ? (a.x == b.x) && (a.y == b.y) : false;
+            a is not null && b is not null ? a.x == b.x && a.y == b.y : false;
 
         public int GetHashCode(KnotPosition obj) =>
             (obj.x.ToString() + "x" + obj.y.ToString()).GetHashCode();
@@ -91,7 +91,7 @@ namespace Aoc22
                     stringP2[1] = new KnotPosition(stringP2[1].x + solve.Item1, stringP2[1].y + solve.Item2);
                     for (int j = 2; j < 10; j++)
                     {
-                        var solve2 = SolvePlank(stringP2[j-1], stringP2[j]);
+                        var solve2 = SolvePlank(stringP2[j - 1], stringP2[j]);
                         stringP2[j] = new KnotPosition(stringP2[j].x + solve2.Item1, stringP2[j].y + solve2.Item2);
                     }
                     visitedTailPositions.Add(stringP2[9]);
@@ -108,13 +108,13 @@ namespace Aoc22
             int absY = Math.Abs(difY);
 
             if (Math.Max(absX, absY) <= 1)  // Take into account distance =1 and overlap of h over tail
-                return new Tuple<int, int>(0, 0);   
+                return new Tuple<int, int>(0, 0);
 
-            bool inAxisX = (head.x == tail.x); bool inAxisY = (head.y == tail.y);
+            bool inAxisX = head.x == tail.x; bool inAxisY = head.y == tail.y;
             bool inAxis = inAxisX | inAxisY;
 
-            return (!inAxis) ? new Tuple<int, int>(difX / absX, difY / absY)
-                             :  (inAxisX) ? new Tuple<int, int>(0, difY/absY)
+            return !inAxis ? new Tuple<int, int>(difX / absX, difY / absY)
+                             : inAxisX ? new Tuple<int, int>(0, difY / absY)
                                           : new Tuple<int, int>(difX / absX, 0);
         }
     }

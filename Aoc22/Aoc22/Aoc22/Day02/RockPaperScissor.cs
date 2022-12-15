@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aoc22
+namespace Aoc22.Day02
 {
     internal class RockPaperScissor
     {
@@ -37,7 +37,7 @@ namespace Aoc22
             (3, 1) => 6,
             (3, 2) => 0,
             (3, 3) => 3,
-            _ => throw new ArgumentException("Invalid values entered : "+ oponent.ToString() + " - " + player.ToString()),
+            _ => throw new ArgumentException("Invalid values entered : " + oponent.ToString() + " - " + player.ToString()),
         };
 
         static int PlayResultPart2(int oponent, int player) => (oponent, player) switch
@@ -57,11 +57,11 @@ namespace Aoc22
         public RockPaperScissor(string hOponent, string hPlayer, int part = 1)
         {
             handOponent = hOponent;
-            handPlayer = hPlayer; 
-            
+            handPlayer = hPlayer;
+
             oponent = PlayTransform(handOponent);
             player = PlayTransform(handPlayer);
-            if(part==2)
+            if (part == 2)
                 player = PlayResultPart2(oponent, player);
             result = PlayResult(oponent, player);
             Score = player + result;
@@ -83,11 +83,11 @@ namespace Aoc22
 
         public override string ToString()
         {
-            String ret = "Round : " + handOponent + " vs " + handPlayer + " ;; ";
+            string ret = "Round : " + handOponent + " vs " + handPlayer + " ;; ";
             ret += "Result = " + result.ToString() + " ; Score = " + Score.ToString();
             return ret;
         }
-        
+
 
     }
 }

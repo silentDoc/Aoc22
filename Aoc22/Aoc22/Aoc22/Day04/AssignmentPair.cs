@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aoc22
+namespace Aoc22.Day04
 {
     internal class AssignmentPair
     {
@@ -27,16 +27,16 @@ namespace Aoc22
 
             pair1_start = int.Parse(assignment1[0]);
             pair1_stop = int.Parse(assignment1[1]);
-            
+
             pair2_start = int.Parse(assignment2[0]);
             pair2_stop = int.Parse(assignment2[1]);
 
-            FullyContained = ((pair1_start <= pair2_start) && (pair1_stop >= pair2_stop))
-                             || ((pair2_start <= pair1_start) && (pair2_stop >= pair1_stop));
+            FullyContained = pair1_start <= pair2_start && pair1_stop >= pair2_stop
+                             || pair2_start <= pair1_start && pair2_stop >= pair1_stop;
 
             Overlap = FullyContained
-                      || ((pair1_start >= pair2_start) && (pair1_start <= pair2_stop))
-                      || ((pair1_stop >= pair2_start) && (pair1_stop <= pair2_stop));
+                      || pair1_start >= pair2_start && pair1_start <= pair2_stop
+                      || pair1_stop >= pair2_start && pair1_stop <= pair2_stop;
 
 
         }

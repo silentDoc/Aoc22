@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aoc22
+namespace Aoc22.Day10
 {
     struct instruction
     {
@@ -12,9 +12,9 @@ namespace Aoc22
         public int val;
         public int cycles
         {
-            get 
+            get
             {
-                return (op == "noop") ? 1 : 2;
+                return op == "noop" ? 1 : 2;
             }
         }
     }
@@ -24,19 +24,19 @@ namespace Aoc22
         List<instruction> instructions = new();
         char[,] crt = new char[6, 40];
 
-        public  VideoSignalProcessor(List<string> instructions) 
-        { 
+        public VideoSignalProcessor(List<string> instructions)
+        {
             parseInstructions(instructions);
         }
 
         void parseInstructions(List<string> instructions)
-        { 
-            foreach(var ins in instructions)
+        {
+            foreach (var ins in instructions)
             {
                 var parts = ins.Split(" ");
-                var name = parts[0]; 
-                var value = (parts.Length > 1) ? int.Parse(parts[1]) : 0;
-                this.instructions.Add(new instruction() { op = name, val = value }); 
+                var name = parts[0];
+                var value = parts.Length > 1 ? int.Parse(parts[1]) : 0;
+                this.instructions.Add(new instruction() { op = name, val = value });
             }
         }
 
@@ -73,7 +73,7 @@ namespace Aoc22
         {
             int hor = (tick - 1) % 40;
             int vert = (tick - 1) / 40;
-            char pixelToDraw = (Math.Abs(hor - xRegister) <= 1) ? '#' : '.';
+            char pixelToDraw = Math.Abs(hor - xRegister) <= 1 ? '#' : '.';
             crt[vert, hor] = pixelToDraw;
         }
 

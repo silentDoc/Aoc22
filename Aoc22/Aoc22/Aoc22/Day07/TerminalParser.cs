@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 // TODO - Try to refactor to something less heavy
 
-namespace Aoc22
+namespace Aoc22.Day07
 {
     enum Commands
-    { 
+    {
         CD,
         LS
     }
@@ -23,7 +23,7 @@ namespace Aoc22
         List<TerminalFile> files;
         public TerminalDirectory? parent;
 
-        public TerminalDirectory(string name, TerminalDirectory? parent = null) 
+        public TerminalDirectory(string name, TerminalDirectory? parent = null)
         {
             this.name = name;
             size = -1;
@@ -49,9 +49,9 @@ namespace Aoc22
 
 
         public int GetSize()
-        { 
-            if(size == -1)
-                size =  Subdirectories.Select(x=> x.GetSize()).Sum() + files.Select(x=>x.size).Sum();
+        {
+            if (size == -1)
+                size = Subdirectories.Select(x => x.GetSize()).Sum() + files.Select(x => x.size).Sum();
             return size;
         }
 
@@ -59,7 +59,7 @@ namespace Aoc22
         {
             var result = new List<TerminalDirectory>(Subdirectories);
             var subResults = Subdirectories.Select(x => x.GetFlatList());
-            foreach(var subResult in subResults)
+            foreach (var subResult in subResults)
                 result.AddRange(subResult);
 
             return result;
@@ -117,7 +117,7 @@ namespace Aoc22
             bool lsMode = false;
             current = root;
 
-            for (int i=1; i<terminalOutput.Count; i++) 
+            for (int i = 1; i < terminalOutput.Count; i++)
             {
                 if (current == null)
                     throw new Exception("Something went wrong - current dir is null ");
@@ -143,7 +143,7 @@ namespace Aoc22
                         current = terminalDirectory;
                     }
                 }
-                else if(lsMode)
+                else if (lsMode)
                 {
                     var lsItem = ParseLsEntry(entry);
                     if (lsItem.isDir)
@@ -173,8 +173,8 @@ namespace Aoc22
                 _ => throw new ArgumentException("Invalid command in terminal :" + cmd),
             };
 
-            if(result.command == Commands.CD) 
-                result.arg = line.Substring(5, line.Length-5).ToLower();
+            if (result.command == Commands.CD)
+                result.arg = line.Substring(5, line.Length - 5).ToLower();
 
             return result;
         }
@@ -183,12 +183,29 @@ namespace Aoc22
         {
             TerminalLsEntry entry = new();
             var elements = line.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            
-            entry.isDir = (line.StartsWith("dir")) ? true : false;
+
+            entry.isDir = line.StartsWith("dir") ? true : false;
             entry.name = elements[1];
-            entry.size = (entry.isDir) ? -1 : int.Parse(elements[0]);
+            entry.size = entry.isDir ? -1 : int.Parse(elements[0]);
 
             return entry;
+        }
+
+        public int Solve(List<string> lines, int part)
+        {
+            ParseCommands(lines);
+
+            if (part == 1)
+                return flatListDir.Where(x => x.size < 100000).Sum(x => x.size);
+            else
+            {
+                var available = availableSpace;
+                var needed = 30000000 - available;
+                var dir = flatListDir.Where(x => x.size > needed).OrderBy(x => x.size).FirstOrDefault();
+                if (dir == null)
+                    throw new Exception("Something went south");
+                return dir.size;
+            }
         }
 
     }

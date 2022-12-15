@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aoc22
+namespace Aoc22.Day14
 {
     record struct Coord
     {
@@ -33,14 +33,14 @@ namespace Aoc22
             if (withFloor)
             {
                 max_y += 2;
-                int maxWide = (max_y * 2);
+                int maxWide = max_y * 2;
                 int centralPoint = min_x + (max_x - min_x) / 2;
                 min_x = centralPoint - maxWide;
                 max_x = centralPoint + maxWide;
             }
 
 
-            rangeX = max_x - min_x +1;
+            rangeX = max_x - min_x + 1;
 
             actualMap = new();
             for (int i = 0; i <= max_y; i++)
@@ -63,14 +63,14 @@ namespace Aoc22
             for (int n = 0; n < trail.Count - 1; n++)
             {
                 var start = trail[n];
-                var end = trail[n+1];
+                var end = trail[n + 1];
 
-                var vertical = (start.x == end.x);
+                var vertical = start.x == end.x;
                 var horizontal = !vertical;
 
                 if (vertical)
                 {
-                    var range = (end.y > start.y)
+                    var range = end.y > start.y
                                 ? Enumerable.Range(start.y, end.y - start.y + 1)
                                 : Enumerable.Range(end.y, start.y - end.y + 1);
 
@@ -79,14 +79,14 @@ namespace Aoc22
                 }
                 else
                 {
-                    var range = (end.x > start.x)
+                    var range = end.x > start.x
                                     ? Enumerable.Range(start.x, end.x - start.x + 1)
                                     : Enumerable.Range(end.x, start.x - end.x + 1);
 
                     foreach (var xx in range)
                         SetRock(new Coord() { x = xx, y = start.y });
                 }
-                    
+
             }
         }
 
@@ -134,7 +134,7 @@ namespace Aoc22
             SetSand(nextPos);
             SetAir(currentPos);
         }
-        
+
 
         public void Log()
             => actualMap.ForEach(x => Console.WriteLine(x));
@@ -156,10 +156,10 @@ namespace Aoc22
 
         public int ParseInput(List<string> lines, int part = 1)
         {
-            foreach(var line in lines)
+            foreach (var line in lines)
                 RockTrails.Add(ParseLine(line));
             this.part = part;
-            sandCave = new(RockTrails , (part == 2));
+            sandCave = new(RockTrails, part == 2);
             //sandCave.Log();
 
             return RockTrails.Count;
@@ -214,8 +214,8 @@ namespace Aoc22
                         rest++;
                         if (part == 2)
                         {
-                            if ((currentCoord.x == startCoord.x) &&
-                                 (currentCoord.y == startCoord.y))
+                            if (currentCoord.x == startCoord.x &&
+                                 currentCoord.y == startCoord.y)
                                 return rest;
                         }
                         currentCoord = startCoord;
@@ -229,7 +229,7 @@ namespace Aoc22
                 sandCave.Log();
                 return rest;
             }
-           
+
         }
     }
 }

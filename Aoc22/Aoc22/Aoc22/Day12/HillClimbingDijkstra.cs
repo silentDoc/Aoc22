@@ -10,7 +10,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aoc22
+namespace Aoc22.Day12
 {
     internal class HillClimbingDijkstra
     {
@@ -44,12 +44,12 @@ namespace Aoc22
                 if (pos.Value != 'S' && pos.Value != 'E')
                 {
                     var x = pos.Value;
-                    pos.Value = (char)((int)'z' - (int)pos.Value + (int)'a');
+                    pos.Value = (char)('z' - pos.Value + 'a');
                 }
 
             var startNode = allPositions.Where(x => x.IsStart).First();
             var endNode = allPositions.Where(x => x.IsDestination).First();
-            
+
             startNode.Value = 'E';
             endNode.Value = 'S';
 
@@ -70,7 +70,7 @@ namespace Aoc22
 
 
 
-            
+
 
 
             MapPosition? iterNode = null;
@@ -105,7 +105,7 @@ namespace Aoc22
                 }
             }
 
-            return (iterNode == null) ? -1 : iterNode.Cost;
+            return iterNode == null ? -1 : iterNode.Cost;
 
         }
 
@@ -147,8 +147,8 @@ namespace Aoc22
 
             if (iterNode != null)
             {
-                return iterNode.Cost-1;
-                
+                return iterNode.Cost - 1;
+
                 /*List<MapPosition> shortestPath = new();
                 while (iterNode.Previous != null)
                 {
@@ -167,8 +167,8 @@ namespace Aoc22
             var x1 = node.x - 1;
             var x2 = node.x + 1;
 
-            var horList = allPositions.Where(p => (p.y == node.y) && ((p.x == node.x + 1) || (p.x == node.x - 1))).Where(x => x.Walkable(node)).ToList();
-            var verList = allPositions.Where(p => (p.x == node.x) && ((p.y == node.y + 1) || (p.y == node.y - 1))).Where(x => x.Walkable(node)).ToList();
+            var horList = allPositions.Where(p => p.y == node.y && (p.x == node.x + 1 || p.x == node.x - 1)).Where(x => x.Walkable(node)).ToList();
+            var verList = allPositions.Where(p => p.x == node.x && (p.y == node.y + 1 || p.y == node.y - 1)).Where(x => x.Walkable(node)).ToList();
 
             List<MapPosition> neighbors = new();
 

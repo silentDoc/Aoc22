@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aoc22
+namespace Aoc22.Day06
 {
     internal class SignalProcessor
     {
@@ -23,15 +23,15 @@ namespace Aoc22
         void Process(int part)
         {
             var foundPosition = -1;
-            var markerLength = (part == 1) ? 4 : 14;
+            var markerLength = part == 1 ? 4 : 14;
 
             for (int i = 0; i < Signal.Length - markerLength - 1; i++)
             {
                 var subStr = Signal.Substring(i, markerLength);
-                if(! (subStr.GroupBy(x=>x).Count() == markerLength))
+                if (!(subStr.GroupBy(x => x).Count() == markerLength))
                     continue;
 
-                foundPosition = i+ markerLength;
+                foundPosition = i + markerLength;
                 break;
             }
             Marker = foundPosition;

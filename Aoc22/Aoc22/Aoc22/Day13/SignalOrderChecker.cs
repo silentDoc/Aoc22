@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aoc22
+namespace Aoc22.Day13
 {
     public abstract class Item
     {
@@ -72,9 +72,9 @@ namespace Aoc22
             ListItem li = new ListItem() { Val = new List<Item>() { i } };
             ListItem a = new ListItem() { Val = new List<Item>() { li } };
 
-            IntItem ii = new IntItem() { Val = 6};
+            IntItem ii = new IntItem() { Val = 6 };
             ListItem lii = new ListItem() { Val = new List<Item>() { ii } };
-            ListItem b = new ListItem() { Val = new List<Item>() { lii } }; 
+            ListItem b = new ListItem() { Val = new List<Item>() { lii } };
 
             items.Add(a);
             items.Add(b);
@@ -138,7 +138,7 @@ namespace Aoc22
         int Compare(Item lhs, Item rhs)
         {
             if (lhs == rhs)
-                return 0; 
+                return 0;
 
             if (lhs is IntItem lIntItem && rhs is IntItem rIntItem)
             {
@@ -146,38 +146,38 @@ namespace Aoc22
                     return 0;
 
                 if (lIntItem.Val < rIntItem.Val)
-                    return -1; 
+                    return -1;
 
-                return 1; 
+                return 1;
             }
 
-            if (lhs is not ListItem lListItem) 
-                lListItem = new ListItem()   {  Val = new List<Item> { lhs }  };
+            if (lhs is not ListItem lListItem)
+                lListItem = new ListItem() { Val = new List<Item> { lhs } };
 
             if (rhs is not ListItem rListItem)
-                rListItem = new ListItem()   {  Val = new List<Item> { rhs }  };
-            
+                rListItem = new ListItem() { Val = new List<Item> { rhs } };
+
 
             var index = 0;
             while (index < lListItem.Val.Count)
             {
                 if (index >= rListItem.Val.Count)
-                    return 1;                       
+                    return 1;
 
                 var comparison = Compare(lListItem.Val[index], rListItem.Val[index]);
                 if (comparison != 0)
-                    return comparison;      
+                    return comparison;
 
                 index++;
                 continue;
             }
 
             if (lListItem.Val.Count() == rListItem.Val.Count())
-                return 0;       
+                return 0;
 
             return -1;
         }
 
-        
+
     }
 }
