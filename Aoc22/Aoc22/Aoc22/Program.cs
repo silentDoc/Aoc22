@@ -34,6 +34,7 @@ namespace Aoc22
                 12 => Day12(input, part).ToString(),
                 13 => Day13(input, part).ToString(),
                 14 => Day14(input, part).ToString(),
+                15 => Day15(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -259,6 +260,12 @@ namespace Aoc22
             sc.ParseInput(lines, part);
             
             return sc.Fill(); 
+        }
+
+        static int Day15(string input, int part)
+        {
+            List<string> lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
