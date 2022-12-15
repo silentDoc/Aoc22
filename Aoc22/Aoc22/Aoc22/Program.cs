@@ -9,7 +9,7 @@ namespace Aoc22
         static void Main()
         {
             int day = 15;
-            int part = 1;
+            int part = 2;
             bool test = false;   // True - test input, False = Real input
 
             string input;
@@ -169,12 +169,12 @@ namespace Aoc22
             return sc.Fill(); 
         }
 
-        static int day15(string input, int part)
+        static long day15(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
             Day15.BeaconSensor bs = new();
             bs.ParseInput(lines);
-            return bs.Solve(2000000);
+            return bs.Solve(2000000, part);
         }
     }
 }

@@ -13,15 +13,35 @@ namespace Aoc22.Day15
         public int y;
     }
 
+   
     class Sensor
     {
         public Coord position;
         public Coord closestBeacon;
+
         int SensorRange
             => Manhattan(position, closestBeacon);
 
+        public bool WithinRange(Coord p)
+            => Manhattan(p, position) <= SensorRange;
+
         int Manhattan(Coord c1, Coord c2)
             => Math.Abs(c1.x - c2.x) + Math.Abs(c1.y - c2.y);
+
+        public List<Coord> GetOuterLimit()
+        {
+            List<Coord> retVal = new();
+            var limitRange = SensorRange + 1;
+
+            for (int i = 0; i <= limitRange; i++)
+            {
+                retVal.Add(new Coord() { x = position.x + (limitRange - i), y = position.y + i });
+                retVal.Add(new Coord() { x = position.x - (limitRange - i), y = position.y + i });
+                retVal.Add(new Coord() { x = position.x + (limitRange - i), y = position.y - i });
+                retVal.Add(new Coord() { x = position.x - (limitRange - i), y = position.y - i });
+            }
+            return retVal;
+        }
 
         public int[]? Coverage(int row)
         {
@@ -76,7 +96,8 @@ namespace Aoc22.Day15
             return beacons.Count;
         }
 
-        public int Solve(int row, int part = 1)
+
+        long SolvePart1(int row)
         {
             var coverages = sensors.Select(x => x.Coverage(row)).ToList();
             List<int> coveredPositions = new List<int>();
@@ -95,7 +116,46 @@ namespace Aoc22.Day15
             posSensor.ForEach(x => coveredPositions.Remove(x));
 
 
-            return coveredPositions.Distinct().Count();
+            return (long) coveredPositions.Distinct().Count();
+        }
+
+        long SolvePart2()
+        {
+            var limit = 4000000;
+
+            List<Coord> positionsToCheck = new();
+            
+            foreach (var sns in sensors)
+            {
+                var outerLimit = sns.GetOuterLimit();
+                outerLimit = outerLimit.Where(l => l.x >= 0 && l.x <= limit)
+                                       .Where(ll => ll.y >= 0 && ll.y <= limit).ToList();
+                positionsToCheck.AddRange(outerLimit); 
+            }
+
+            Console.WriteLine(positionsToCheck.Count.ToString() + " positions to check");
+
+            Coord c = new Coord();
+            foreach(var p in positionsToCheck)
+            {
+                var outOfRange = sensors.Select(s => !s.WithinRange(p)).Aggregate(true, (acc, val) => acc && val);
+                if (outOfRange)
+                {
+                    c = p;
+                    break;
+                }
+            }
+
+            return calcFrequency(c);
+        }
+
+        long calcFrequency(Coord pos)
+            => (long) 4000000 * (long)pos.x + (long)pos.y;
+
+        public long Solve(int row, int part = 1)
+        {
+            return (part == 1) ? SolvePart1(row)
+                               : SolvePart2();
         }
 
     }
