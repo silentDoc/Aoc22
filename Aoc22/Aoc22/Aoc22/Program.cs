@@ -9,7 +9,7 @@ namespace Aoc22
         static void Main()
         {
             int day = 16;
-            int part = 1;
+            int part = 2;
             bool test = false;   // True - test input, False = Real input
 
             string input;
@@ -184,7 +184,7 @@ namespace Aoc22
             Day16.ValveManager vm = new();
             vm.ParseInput(lines);
 
-            return vm.SolvePart1();
+            return vm.Solve(part);
         }
     }
 }

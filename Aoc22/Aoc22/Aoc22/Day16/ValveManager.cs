@@ -62,13 +62,6 @@ namespace Aoc22.Day16
             }
         }
 
-        public int SolvePart1()
-        {
-            List<Valve> valvesToConsider = valves.Values.Where(x => x.flowRate > 0).ToList();
-
-            return ComputeMaxReleasedPressure(30, valvesToConsider, "AA");
-        }
-
         void ShortestPathToTarget(Dictionary<string, Valve> valves, Valve? current, string target)
         {
             var visited = new HashSet<string>();    
@@ -111,6 +104,47 @@ namespace Aoc22.Day16
             }
             return maxGain;
         }
+
+        // The same idea - we just have to keep track of both times and current valves, because the paths are not equal and one of the guys
+        // can reach the next valve way before the other. So it is about iterating the same way, sharing the list of used nodes, but considering
+        // at each step who acts next.
+        int ComputeReleasedPressureWithElephant(int[] timeRemaining, List<Valve> valvesWithFlow, string[] currentValve)
+        {
+            int maxGain = 0;
+            int who = timeRemaining[0] > timeRemaining[1] ? 0 : 1;
+
+            var cur = valves[currentValve[who]];
+            foreach (var valve in valvesWithFlow)
+            {
+                int newTimeRemaining = timeRemaining[who] - cur.shortestpath[valve.name] - 1;
+                if (newTimeRemaining > 0)
+                {
+                    var newTimes = new int[] { newTimeRemaining, timeRemaining[1 - who] };
+                    var newPositions = new string[] { valve.name, currentValve[1 - who] };
+                    var remainingValves = valvesWithFlow.Where(v => v.name != valve.name).ToList();
+                    int gain = newTimeRemaining * valve.flowRate + ComputeReleasedPressureWithElephant(newTimes, remainingValves, newPositions);
+                    if (maxGain < gain) maxGain = gain;
+                }
+            }
+            return maxGain;
+        }
+
+        public int Solve(int part = 1)
+            => (part == 1) ? SolvePart1() : SolvePart2();
+
+
+        int SolvePart1()
+        {
+            List<Valve> valvesToConsider = valves.Values.Where(x => x.flowRate > 0).ToList();
+            return ComputeMaxReleasedPressure(30, valvesToConsider, "AA");
+        }
+
+        int SolvePart2()
+        {
+            List<Valve> valvesToConsider = valves.Values.Where(x => x.flowRate > 0).ToList();
+            return ComputeReleasedPressureWithElephant(new int[]{ 26, 26}, valvesToConsider, new string[] { "AA", "AA" });
+        }
+
 
     }
 }
