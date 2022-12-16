@@ -35,6 +35,7 @@ namespace Aoc22
                 13 => day13(input, part).ToString(),
                 14 => day14(input, part).ToString(),
                 15 => day15(input, part).ToString(),
+                16 => day16(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -175,6 +176,12 @@ namespace Aoc22
             Day15.BeaconSensor bs = new();
             bs.ParseInput(lines);
             return bs.Solve(2000000, part);
+        }
+
+        static int day16(string input, int part)
+        {
+            List<string> lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
