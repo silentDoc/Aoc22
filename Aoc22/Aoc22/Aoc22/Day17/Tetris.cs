@@ -1,10 +1,8 @@
-﻿using Aoc22.Day05;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,10 +25,18 @@ namespace Aoc22.Day17
     internal class Tetris
     {
         char[,] piece1 = new char[1, 4] { { '#', '#', '#', '#' } };
-        char[,] piece2 = new char[3, 3] { { '.', '#', '.' }, { '#', '#', '#' }, { '.', '#', '.' } };
-        char[,] piece3 = new char[3, 3] { { '.', '.', '#' }, { '.', '.', '#' }, { '#', '#', '#' } };
-        char[,] piece4 = new char[4, 1] { { '#' }, { '#' }, { '#' }, {'#' } };
-        char[,] piece5 = new char[2, 2] { { '#' , '#' }, { '#', '#' } };
+        char[,] piece2 = new char[3, 3] { { '.', '#', '.' }, 
+                                          { '#', '#', '#' }, 
+                                          { '.', '#', '.' } };
+        char[,] piece3 = new char[3, 3] { { '.', '.', '#' }, 
+                                          { '.', '.', '#' }, 
+                                          { '#', '#', '#' } };
+        char[,] piece4 = new char[4, 1] { { '#' }, 
+                                          { '#' }, 
+                                          { '#' }, 
+                                          { '#' } };
+        char[,] piece5 = new char[2, 2] { { '#' , '#' }, 
+                                          { '#' , '#' } };
         
         List<char[]> game = new();
 
@@ -38,7 +44,6 @@ namespace Aoc22.Day17
 
         public void ParseInput(List<string> lines)
             => sequence = lines[0];
-
 
         int GetCurrentHeight()
         {
@@ -110,7 +115,7 @@ namespace Aoc22.Day17
         }
 
 
-        int Play2(string sequence, int numPieces)
+        int Play(string sequence, int numPieces)
         {
             int piecesCount = 0;
             int currentHeight = -1;
@@ -126,7 +131,8 @@ namespace Aoc22.Day17
             pieces.Add(new TetrisPiece(piece4));
             pieces.Add(new TetrisPiece(piece5));
 
-            bool move = false;
+            bool jet = false;
+
             while (piecesCount < numPieces)
             {
                 var piece = pieces[piecesCount % 5];
@@ -143,21 +149,17 @@ namespace Aoc22.Day17
                     }
                 }
 
-                move = !move;
-                if (!move) // Down
+                jet = !jet;  // Alternate every step
+                
+                if (!jet) // Drop
                 {
-                    
                     if (!Collides(piece, currentHeight - 1, currentLeft))
                     {
                         currentHeight--;
-                        //Trace.WriteLine("v");
-                        //LogGamePiece(piece, currentHeight, currentLeft, piecesCount);
                         continue;
                     }
 
                     RestPiece(piece, currentHeight, currentLeft);
-                    //Trace.WriteLine(GetCurrentHeight().ToString() + " -- Rests");
-                    //LogGamePiece(piece, currentHeight, currentLeft, piecesCount);
                     piecesCount++;
                     currentLeft = 2;
                     currentHeight = -1;
@@ -166,27 +168,15 @@ namespace Aoc22.Day17
                 {
                     char dir = sequence[currentMove % sequence.Length];
                     currentMove++;
-                    //Trace.WriteLine(dir);
                     int inc = dir == '>' ? 1 : -1;
 
                     if (currentLeft + inc + piece.w > 7)
-                    {
-                        //Trace.WriteLine("Cannot move - border R");
                         continue;
-                    }
                     if (currentLeft + inc < 0)
-                    {
-                        //Trace.WriteLine("Cannot move - border L");
                         continue;
-                    }
 
                     if (!Collides(piece, currentHeight, currentLeft + inc))
-                    {
                         currentLeft += inc;
-                    }
-                    //else
-                    //    Trace.WriteLine("Cannot move - collision");
-                    //LogGamePiece(piece, currentHeight, currentLeft, piecesCount);
                 }
             }
 
@@ -200,11 +190,12 @@ namespace Aoc22.Day17
 
         int SolvePart1()
         {
-            return Play2(sequence, 2022);
+            return Play(sequence, 2022);
         }
 
         int SolvePart2()
         {
+            //1000000000000
             return 0;
         }
 
