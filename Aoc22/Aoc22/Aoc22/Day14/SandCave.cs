@@ -19,7 +19,6 @@ namespace Aoc22.Day14
         int max_x;
         int min_x;
         int max_y;
-        int min_y;
         int rangeX;
 
         public SandCaveMap(List<List<Coord>> rockTrails, bool withFloor = false)
@@ -28,8 +27,7 @@ namespace Aoc22.Day14
             max_x = rockTrails.Select(x => x.Max(g => g.x)).Max();
             max_y = rockTrails.Select(x => x.Max(g => g.y)).Max();
             min_x = rockTrails.Select(x => x.Min(g => g.x)).Min();
-            min_y = 0;
-
+            
             if (withFloor)
             {
                 max_y += 2;
@@ -66,7 +64,6 @@ namespace Aoc22.Day14
                 var end = trail[n + 1];
 
                 var vertical = start.x == end.x;
-                var horizontal = !vertical;
 
                 if (vertical)
                 {
@@ -135,7 +132,6 @@ namespace Aoc22.Day14
             SetAir(currentPos);
         }
 
-
         public void Log()
             => actualMap.ForEach(x => Console.WriteLine(x));
 
@@ -150,7 +146,7 @@ namespace Aoc22.Day14
 
     internal class SandCave
     {
-        SandCaveMap? sandCave;
+        SandCaveMap? sandCaveMap;
         int part;
         List<List<Coord>> RockTrails = new();
 
@@ -159,8 +155,7 @@ namespace Aoc22.Day14
             foreach (var line in lines)
                 RockTrails.Add(ParseLine(line));
             this.part = part;
-            sandCave = new(RockTrails, part == 2);
-            //sandCave.Log();
+            sandCaveMap = new(RockTrails, part == 2);
 
             return RockTrails.Count;
         }
@@ -179,33 +174,35 @@ namespace Aoc22.Day14
 
         public int Fill()
         {
-            bool stop = false;
             Coord startCoord = new Coord() { x = 500, y = 0 };
             Coord currentCoord = new Coord() { x = 500, y = 0 };
             int rest = 0;
+            if (sandCaveMap == null)
+                return -1;
+            
             try
             {
                 while (true)
                 {
                     var nextCoord = currentCoord;
-                    if (sandCave.CanMoveDown(currentCoord))
+                    if (sandCaveMap.CanMoveDown(currentCoord))
                     {
                         nextCoord.y++;
-                        sandCave.Move(currentCoord, nextCoord);
+                        sandCaveMap.Move(currentCoord, nextCoord);
                         currentCoord = nextCoord;
                     }
-                    else if (sandCave.CanMoveDownLeft(currentCoord))
+                    else if (sandCaveMap.CanMoveDownLeft(currentCoord))
                     {
                         nextCoord.y++;
                         nextCoord.x--;
-                        sandCave.Move(currentCoord, nextCoord);
+                        sandCaveMap.Move(currentCoord, nextCoord);
                         currentCoord = nextCoord;
                     }
-                    else if (sandCave.CanMoveDownRight(currentCoord))
+                    else if (sandCaveMap.CanMoveDownRight(currentCoord))
                     {
                         nextCoord.y++;
                         nextCoord.x++;
-                        sandCave.Move(currentCoord, nextCoord);
+                        sandCaveMap.Move(currentCoord, nextCoord);
                         currentCoord = nextCoord;
                     }
                     else
@@ -220,13 +217,11 @@ namespace Aoc22.Day14
                         }
                         currentCoord = startCoord;
                     }
-                    //Thread.Sleep(50);
-                    //sandCave.LogNice();
                 }
             }
-            catch (IndexOutOfRangeException ex)
+            catch (IndexOutOfRangeException)
             {
-                sandCave.Log();
+                sandCaveMap.Log();
                 return rest;
             }
 
