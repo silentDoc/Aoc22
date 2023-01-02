@@ -9,7 +9,7 @@ namespace Aoc22
         static void Main()
         {
             int day = 17;
-            int part = 1;
+            int part = 2;
             bool test = false;   // True - test input, False = Real input
 
             string input;
@@ -188,13 +188,13 @@ namespace Aoc22
             return vm.Solve(part);
         }
 
-        static int day17(string input, int part)
+        static long day17(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
             Day17.Tetris tetris = new();
             tetris.ParseInput(lines);
             
-            return tetris.Solve();
+            return tetris.Solve(part);
         }
     }
 }
