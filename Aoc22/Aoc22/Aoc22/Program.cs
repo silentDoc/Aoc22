@@ -37,6 +37,7 @@ namespace Aoc22
                 15 => day15(input, part).ToString(),
                 16 => day16(input, part).ToString(),
                 17 => day17(input, part).ToString(),
+                18 => day18(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -195,6 +196,12 @@ namespace Aoc22
             tetris.ParseInput(lines);
             
             return tetris.Solve(part);
+        }
+
+        static int day18(string input, int part)
+        {
+            List<string> lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
