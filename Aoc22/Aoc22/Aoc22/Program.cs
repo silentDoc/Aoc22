@@ -9,7 +9,7 @@ namespace Aoc22
         static void Main()
         {
             int day = 18;
-            int part = 1;
+            int part = 2;
             bool test = false;   // True - test input, False = Real input
 
             string input;
@@ -204,7 +204,7 @@ namespace Aoc22
             Day18.SurfaceExplorer surfExplorer = new();
             surfExplorer.ParseInput(lines);
 
-            return surfExplorer.Solve();
+            return surfExplorer.Solve(part);
         }
     }
 }
