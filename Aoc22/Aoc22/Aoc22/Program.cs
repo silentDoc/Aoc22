@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Aoc22.Day19;
+using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 
 
@@ -8,8 +9,8 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 18;
-            int part = 2;
+            int day = 19;
+            int part = 1;
             bool test = false;   // True - test input, False = Real input
 
             string input;
@@ -211,7 +212,10 @@ namespace Aoc22
         static int day19(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
-            return 0;
+            MiningSquad squad = new();
+            squad.ParseInput(lines);
+
+            return squad.Solve(part);
         }
     }
 }
