@@ -1,5 +1,6 @@
 ﻿using Aoc22.Day19;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Numerics;
 
 
@@ -10,7 +11,7 @@ namespace Aoc22
         static void Main()
         {
             int day = 19;
-            int part = 1;
+            int part = 2;
             bool test = false;   // True - test input, False = Real input
 
             string input;
@@ -211,11 +212,17 @@ namespace Aoc22
 
         static int day19(string input, int part)
         {
+            Stopwatch st = new Stopwatch();
+            
             List<string> lines = File.ReadAllLines(input).ToList();
             MiningSquad squad = new();
             squad.ParseInput(lines);
-
-            return squad.Solve(part);
+            
+            st.Start();
+            var ret = squad.Solve(part);
+            st.Stop();
+            Console.WriteLine(st.Elapsed.TotalSeconds.ToString() + "s ellapsed ");
+            return ret;
         }
     }
 }

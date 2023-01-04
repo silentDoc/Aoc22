@@ -163,7 +163,7 @@ namespace Aoc22.Day19
         }
 
         public int Solve(int part = 1)
-            => (part == 1) ? FindBestBluePrint(24) : 0;
+            => (part == 1) ? FindBestBluePrint(24) : FindBestBlueprint_P2(32);
 
         int FindBestBluePrint(int numMinutes)
         {
@@ -177,6 +177,19 @@ namespace Aoc22.Day19
                 result += bestSteps[i].geode * (i + 1);
             }
 
+            return result;
+        }
+
+        int FindBestBlueprint_P2(int numMinutes)
+        {
+            List<Step> bestSteps = new();
+
+            Parallel.For(0, 3, x => bestSteps.Add(SimulateBlueprint(blueprints[x], numMinutes)));
+            
+            //for(int i=0; i<3; i++)
+            //    bestSteps.Add(SimulateBlueprint(blueprints[i], numMinutes));
+
+            var result = bestSteps.Select(x => x.geode).Aggregate(1, (acc, val) => acc * val);
             return result;
         }
 
@@ -248,7 +261,7 @@ namespace Aoc22.Day19
 
                 activeSteps.Clear();
                 activeSteps.AddRange(nextSteps);
-                Trace.WriteLine(minute.ToString() + "-" + activeSteps.Count.ToString());
+                Console.WriteLine(minute.ToString() + "-" + activeSteps.Count.ToString());
                 nextSteps.Clear();
                 checker.Clear();
             }
