@@ -35,10 +35,10 @@ namespace Aoc22.Day19
 
     record struct BuildOptions
     {
-        public int ore_robots;
-        public int clay_robots;
-        public int obsidian_robots;
-        public int geode_robots;
+        public bool ore_robots;
+        public bool clay_robots;
+        public bool obsidian_robots;
+        public bool geode_robots;
     }
 
     class Step
@@ -84,7 +84,7 @@ namespace Aoc22.Day19
 
         public override int GetHashCode()
         {
-            return minute * 100000000 + ore_robots * 10000000 + clay_robots * 1000000 + obsidian_robots * 100000 + geode_robots * 10000 + ore * 1000 + clay * 100 + obsidian * 10 + geode;
+            return geode_robots * 100000000 + ore_robots * 10000000 + clay_robots * 1000000 + obsidian_robots * 100000 + minute * 10000 + ore * 1000 + clay * 100 + obsidian * 10 + geode;
         }
 
         public void Collect(int ore, int clay, int obsidian, int geode)
@@ -95,52 +95,49 @@ namespace Aoc22.Day19
             this.geode += geode;
         }
 
-        public void TryBuild(BuildOptions buildOrders, Blueprint bp)
+        public void BuildRobot(BuildOptions buildOrders, Blueprint bp)
         {
-            if ((ore >= buildOrders.geode_robots * bp.geode_robot_cost_ore) &&
-               (obsidian >= buildOrders.geode_robots * bp.geode_robot_cost_obsidian))
+            if (buildOrders.geode_robots)
             {
-                geode_robots += buildOrders.geode_robots;
-                ore -= buildOrders.geode_robots * bp.geode_robot_cost_ore;
-                obsidian -= buildOrders.geode_robots * bp.geode_robot_cost_obsidian;
+                geode_robots++;
+                ore -= bp.geode_robot_cost_ore;
+                obsidian -= bp.geode_robot_cost_obsidian;
             }
-            if (ore >= buildOrders.ore_robots * bp.ore_robot_cost)
+            if (buildOrders.ore_robots)
             {
-                ore_robots += buildOrders.ore_robots;
-                ore -= bp.ore_robot_cost * buildOrders.ore_robots;
+                ore_robots++;
+                ore -= bp.ore_robot_cost;
             }
-            if (ore >= buildOrders.clay_robots * bp.clay_robot_cost)
+            if (buildOrders.clay_robots)
             {
-                clay_robots += buildOrders.clay_robots;
-                ore -= bp.clay_robot_cost * buildOrders.clay_robots;
+                clay_robots++;
+                ore -= bp.clay_robot_cost;
             }
-            if ((ore >= buildOrders.obsidian_robots * bp.obsidian_robot_cost_ore) &&
-                (clay >= buildOrders.obsidian_robots * bp.obsidian_robot_cost_clay))
+            if (buildOrders.obsidian_robots)
             {
-                obsidian_robots += buildOrders.obsidian_robots;
-                ore -= buildOrders.obsidian_robots * bp.obsidian_robot_cost_ore;
-                clay -= buildOrders.obsidian_robots * bp.obsidian_robot_cost_clay;
+                obsidian_robots++;
+                ore -=  bp.obsidian_robot_cost_ore;
+                clay -= bp.obsidian_robot_cost_clay;
             }
-           
         }
 
         public BuildOptions WhatCanIBuild(Blueprint bp)
         {
             BuildOptions opts = new BuildOptions();
-            opts.ore_robots = ore / bp.ore_robot_cost;
-            opts.clay_robots = ore / bp.clay_robot_cost;
-            opts.obsidian_robots = (ore / bp.obsidian_robot_cost_ore) < (clay / bp.obsidian_robot_cost_clay) ? (ore / bp.obsidian_robot_cost_ore) : (clay / bp.obsidian_robot_cost_clay);
-            opts.geode_robots = (ore / bp.geode_robot_cost_ore) < (obsidian / bp.geode_robot_cost_obsidian) ? (ore / bp.geode_robot_cost_ore) : (obsidian / bp.geode_robot_cost_obsidian);
+            opts.ore_robots = ore >= bp.ore_robot_cost;
+            opts.clay_robots = ore >= bp.clay_robot_cost;
+            opts.obsidian_robots = (ore >= bp.obsidian_robot_cost_ore) && (clay >= bp.obsidian_robot_cost_clay);
+            opts.geode_robots = (ore >= bp.geode_robot_cost_ore) && (obsidian >= bp.geode_robot_cost_obsidian);
             return opts;
         }
-
+       
         public Step DoStep(BuildOptions buildOrders, Blueprint bp)
         {
-            Step retVal = new Step(this);
-            retVal.minute++;
-            retVal.TryBuild(buildOrders, bp);
-            retVal.Collect(ore_robots, clay_robots, obsidian_robots, geode_robots);
-            return retVal;
+            Step nextStep = new Step(this);
+            nextStep.minute++;
+            nextStep.BuildRobot(buildOrders, bp);
+            nextStep.Collect(ore_robots, clay_robots, obsidian_robots, geode_robots);
+            return nextStep;
         }
 
     }
@@ -163,111 +160,94 @@ namespace Aoc22.Day19
         }
 
         public int Solve(int part = 1)
-            => (part == 1) ? FindBestBluePrint(24) : FindBestBlueprint_P2(32);
+            => FindBestBluePrint((part == 1) ? 24 : 32, part);
 
-        int FindBestBluePrint(int numMinutes)
+        int FindBestBluePrint(int numMinutes, int part=1)
         {
             List<Step> bestSteps = new();
-            foreach (var bp in blueprints)
-                bestSteps.Add(SimulateBlueprint(bp, numMinutes));
 
-            int result = 0;
-            for (int i = 0; i < bestSteps.Count; i++)
+            if (part == 2)
             {
-                result += bestSteps[i].geode * (i + 1);
+                Parallel.For(0, 3, x => bestSteps.Add(SimulateBlueprint(blueprints[x], numMinutes)));
+                return bestSteps.Select(x => x.geode).Aggregate(1, (acc, val) => acc * val);
             }
 
-            return result;
-        }
-
-        int FindBestBlueprint_P2(int numMinutes)
-        {
-            List<Step> bestSteps = new();
-
-            Parallel.For(0, 3, x => bestSteps.Add(SimulateBlueprint(blueprints[x], numMinutes)));
-            
-            //for(int i=0; i<3; i++)
-            //    bestSteps.Add(SimulateBlueprint(blueprints[i], numMinutes));
-
-            var result = bestSteps.Select(x => x.geode).Aggregate(1, (acc, val) => acc * val);
-            return result;
+            // Part == 1
+            blueprints.ForEach(x => bestSteps.Add(SimulateBlueprint(x, numMinutes)));
+            return bestSteps.Select((x, index) => x.geode * (index+1)).Sum();
         }
 
         Step SimulateBlueprint(Blueprint bp, int numMinutes)
         {
-            
             List<Step> activeSteps = new List<Step>();
             activeSteps.Add(new Step(0, 1, 0, 0, 0, 0, 0, 0, 0));
-            
-            HashSet<int> checker = new();
+            HashSet<int> checker = new();   // Hashshet comparison is much faster than List<>.Contains, specially with ints
 
             for (int minute = 0; minute < numMinutes; minute++)
             {
                 List<Step> nextSteps = new();
                 foreach (var step in activeSteps)
                 {
+                    // The only optimization applied -- whenever we can build a geode robot, we go for it and ignore any other state. That cuts time by a lot, specially when some minutes have passed.
                     var possibilities = step.WhatCanIBuild(bp);
-                    if (possibilities.ore_robots > 0 && possibilities.geode_robots == 0)
+                    if (possibilities.ore_robots && !possibilities.geode_robots)
                     {
-                        var s1 = step.DoStep(new BuildOptions() { ore_robots = 1, clay_robots = 0, obsidian_robots = 0, geode_robots = 0 }, bp);
-                        var h1 = s1.GetHashCode();
+                        var nextStep1 = step.DoStep(new BuildOptions() { ore_robots = true, clay_robots = false, obsidian_robots = false, geode_robots = false }, bp);
+                        var h1 = nextStep1.GetHashCode();
                         if (!checker.Contains(h1))
                         {
-                            nextSteps.Add(s1);
+                            nextSteps.Add(nextStep1);
                             checker.Add(h1);
                         }
                     }
 
-                    if (possibilities.clay_robots > 0 && possibilities.geode_robots == 0)
+                    if (possibilities.clay_robots && !possibilities.geode_robots)
                     {
-                        var s2 = step.DoStep(new BuildOptions() { ore_robots = 0, clay_robots = 1, obsidian_robots = 0, geode_robots = 0 }, bp);
-                        var h2 = s2.GetHashCode();
+                        var nextStep2 = step.DoStep(new BuildOptions() { ore_robots = false, clay_robots = true, obsidian_robots = false, geode_robots = false }, bp);
+                        var h2 = nextStep2.GetHashCode();
                         if (!checker.Contains(h2))
                         {
-                            nextSteps.Add(s2);
+                            nextSteps.Add(nextStep2);
                             checker.Add(h2);
                         }
                     }
 
-                    if (possibilities.obsidian_robots > 0 && possibilities.geode_robots == 0)
+                    if (possibilities.obsidian_robots && !possibilities.geode_robots)
                     {
-                        var s3 = step.DoStep(new BuildOptions() { ore_robots = 0, clay_robots = 0, obsidian_robots = 1, geode_robots = 0 }, bp);
-                        var h3 = s3.GetHashCode();
+                        var nextStep3 = step.DoStep(new BuildOptions() { ore_robots = false, clay_robots = false, obsidian_robots = true, geode_robots = false }, bp);
+                        var h3 = nextStep3.GetHashCode();
                         if (!checker.Contains(h3))
                         {
-                            nextSteps.Add(s3);
+                            nextSteps.Add(nextStep3);
                             checker.Add(h3);
                         }
                     }
-                    
-                    if (possibilities.geode_robots > 0)
+
+                    if (possibilities.geode_robots)
                     {
-                        var s4 = step.DoStep(new BuildOptions() { ore_robots = 0, clay_robots = 0, obsidian_robots = 0, geode_robots = 1 }, bp);
-                        var h4 = s4.GetHashCode();
+                        var nextStep4 = step.DoStep(new BuildOptions() { ore_robots = false, clay_robots = false, obsidian_robots = false, geode_robots = true }, bp);
+                        var h4 = nextStep4.GetHashCode();
                         if (!checker.Contains(h4))
                         {
-                            nextSteps.Add(s4);
+                            nextSteps.Add(nextStep4);
                             checker.Add(h4);
                         }
                     }
-                    var s5 = step.DoStep(new BuildOptions() { ore_robots = 0, clay_robots = 0, obsidian_robots = 0, geode_robots = 0 }, bp);
-                    var h5 = s5.GetHashCode();
+                    var nextStep5 = step.DoStep(new BuildOptions() { ore_robots = false, clay_robots = false, obsidian_robots = false, geode_robots = false }, bp);
+                    var h5 = nextStep5.GetHashCode();
                     if (!checker.Contains(h5))
                     {
-                        nextSteps.Add(s5);
+                        nextSteps.Add(nextStep5);
                         checker.Add(h5);
                     }
                 }
 
                 activeSteps.Clear();
                 activeSteps.AddRange(nextSteps);
-                Console.WriteLine(minute.ToString() + "-" + activeSteps.Count.ToString());
                 nextSteps.Clear();
                 checker.Clear();
             }
             var maxGeode = activeSteps.Max(x => x.geode);
-
-
             return activeSteps.Where(x => x.geode == maxGeode).First();
         }
 
