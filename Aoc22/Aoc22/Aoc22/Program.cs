@@ -10,7 +10,7 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 19;
+            int day = 20;
             int part = 1;
             bool test = false;   // True - test input, False = Real input
 
@@ -41,6 +41,7 @@ namespace Aoc22
                 17 => day17(input, part).ToString(),
                 18 => day18(input, part).ToString(),
                 19 => day19(input, part).ToString(),
+                20 => day20(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -212,17 +213,16 @@ namespace Aoc22
 
         static int day19(string input, int part)
         {
-            Stopwatch st = new Stopwatch();
-            
             List<string> lines = File.ReadAllLines(input).ToList();
             MiningSquad squad = new();
             squad.ParseInput(lines);
-            
-            st.Start();
-            var ret = squad.Solve(part);
-            st.Stop();
-            Console.WriteLine(st.Elapsed.TotalSeconds.ToString() + "s ellapsed ");
-            return ret;
+            return squad.Solve(part);
+        }
+
+        static int day20(string input, int part)
+        {
+            List<string> lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
