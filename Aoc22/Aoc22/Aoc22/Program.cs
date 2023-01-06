@@ -11,7 +11,7 @@ namespace Aoc22
         {
             int day = 22;
             int part = 1;
-            bool test = true;   // True - test input, False = Real input
+            bool test = false;   // True - test input, False = Real input
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -241,7 +241,10 @@ namespace Aoc22
         static int day22(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day22.MonkeyMap monkeyMap = new();
+            monkeyMap.ParseInput(lines);
+
+            return monkeyMap.Solve();
         }
     }
 }
