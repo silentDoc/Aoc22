@@ -11,7 +11,7 @@ namespace Aoc22
         {
             int day = 21;
             int part = 1;
-            bool test = true;   // True - test input, False = Real input
+            bool test = false;   // True - test input, False = Real input
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -228,10 +228,13 @@ namespace Aoc22
             return mixer.Solve(part);
         }
 
-        static int day21(string input, int part)
+        static long day21(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day21.MonkeyMath monkeyMath = new();
+            monkeyMath.ParseInput(lines);
+            
+            return monkeyMath.Solve(part);
         }
     }
 }
