@@ -15,7 +15,7 @@ namespace Aoc22.Day20
         public int CheckRepeats()   // I was about to go nuts until I saw the list had repeated elements !!
             => sourceList.Select(x => x.value).Distinct().Count() - sourceList.Count();
 
-        List<(int value, int index)> sourceList = new();    // Doing it like this ensures item uniqueness
+        List<(long value, int index)> sourceList = new();    // Doing it like this ensures item uniqueness
 
         public void ParseInput(List<string> lines)
         {
@@ -24,24 +24,28 @@ namespace Aoc22.Day20
                 sourceList.Add( (int.Parse(line), index++) );
         }
 
-        public int Solve(int part = 1)
-            => Mix(part);
+        public long Solve(int part = 1)
+            => (part==1) ? Mix(1,1,part) : Mix(10, 811589153, part);
 
-        int Mix(int part = 1)
+        long Mix(int times, long key, int part = 1)
         {
-            List<(int value, int index)> mixedList = new();
-            mixedList.AddRange(sourceList);
-            var count = sourceList.Count;
+            for (int i = 0; i < sourceList.Count; i++)
+                sourceList[i] = (sourceList[i].value * key, sourceList[i].index);
 
-            foreach (var element in sourceList)
-            {
-                var oldIndex = mixedList.IndexOf(element);
-                var newIndex = (oldIndex + element.value) % (count - 1);
-                if (newIndex < 0)
-                    newIndex = count + newIndex - 1;
-                mixedList.Remove(element);
-                mixedList.Insert(newIndex, element);
-            }
+            List<(long value, int index)> mixedList = new();
+            mixedList.AddRange(sourceList);
+            var count = (long) sourceList.Count;
+
+            for (int mix = 0; mix < times; mix++)
+                foreach (var element in sourceList)
+                {
+                    var oldIndex = (long)mixedList.IndexOf(element);
+                    var newIndex = (oldIndex + element.value) % (count - 1);
+                    if (newIndex < 0)
+                        newIndex = count + newIndex - 1;
+                    mixedList.Remove(element);
+                    mixedList.Insert((int)newIndex, element);
+                }
 
             int indexOfZero = mixedList.FindIndex(x => x.value==0);
             int index1000th = (indexOfZero + 1000) % mixedList.Count;

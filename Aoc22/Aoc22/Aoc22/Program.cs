@@ -10,7 +10,7 @@ namespace Aoc22
         static void Main()
         {
             int day = 20;
-            int part = 1;
+            int part = 2;
             bool test = false;   // True - test input, False = Real input
 
             string input;
@@ -218,14 +218,12 @@ namespace Aoc22
             return squad.Solve(part);
         }
 
-        static int day20(string input, int part)
+        static long day20(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
             Day20.Mixer mixer = new();
             mixer.ParseInput(lines);
-
             //return mixer.CheckRepeats();
-
             return mixer.Solve(part);
         }
     }
