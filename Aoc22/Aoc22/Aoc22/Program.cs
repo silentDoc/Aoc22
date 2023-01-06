@@ -1,5 +1,4 @@
-﻿using Aoc22.Day19;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Numerics;
 
@@ -214,7 +213,7 @@ namespace Aoc22
         static int day19(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
-            MiningSquad squad = new();
+            Day19.MiningSquad squad = new();
             squad.ParseInput(lines);
             return squad.Solve(part);
         }
@@ -222,7 +221,12 @@ namespace Aoc22
         static int day20(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day20.Mixer mixer = new();
+            mixer.ParseInput(lines);
+
+            //return mixer.CheckRepeats();
+
+            return mixer.Solve(part);
         }
     }
 }
