@@ -10,7 +10,7 @@ namespace Aoc22
         static void Main()
         {
             int day = 21;
-            int part = 1;
+            int part = 2;
             bool test = false;   // True - test input, False = Real input
 
             string input;

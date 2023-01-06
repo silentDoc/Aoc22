@@ -16,6 +16,7 @@ namespace Aoc22.Day21
         public string firstOp;
         public string secondOp;
         public string operand;
+        public bool dependsOnHuman; 
 
         public Monkey(string name, bool hasValue, long value, string firstOp, string secondOp, string operand)
         {
@@ -25,6 +26,7 @@ namespace Aoc22.Day21
             this.firstOp = firstOp;
             this.secondOp = secondOp;
             this.operand = operand;
+            dependsOnHuman = false;
         }   
     }
 
@@ -68,6 +70,8 @@ namespace Aoc22.Day21
                 var monkeyOp2 = monkeys.Where(x => x.name == monkey.secondOp).First();
                 if (!monkeyOp2.hasValue)
                     continue;
+   
+                monkey.dependsOnHuman = monkeyOp1.dependsOnHuman || monkeyOp2.dependsOnHuman;
 
                 monkey.value = monkey.operand switch
                 {
@@ -82,16 +86,56 @@ namespace Aoc22.Day21
             }
         }
 
-        public long Solve(int part = 1)
-            => Yell(part);
+        (Monkey node, long newValue) TraverseDown(Monkey monkey, long currentValue)
+        {
+            var op1 = monkeys.Where(x => x.name == monkey.firstOp).First();
+            var op2 = monkeys.Where(x => x.name == monkey.secondOp).First();
+            
+            var solidValue = (op1.dependsOnHuman) ? op2.value : op1.value;
+            var nextNode = (op1.dependsOnHuman) ? op1 : op2;
 
-        private long Yell(int part = 1)
+            var newVal = monkey.operand switch
+            {
+                "+" => currentValue - solidValue,
+                "-" => (nextNode == op1) ? currentValue + solidValue : solidValue - currentValue,
+                "*" => currentValue / solidValue,
+                "/" => (nextNode == op1) ? currentValue * solidValue : currentValue / solidValue,
+                _ => throw new Exception("Unrecognized operand " + monkey.operand),
+            };
+
+            return (nextNode, newVal);
+        }
+
+        private long FindMatch()
+        {
+            var rootElement = monkeys.Where(x => x.name == "root").First();
+            var humanElement = monkeys.Where(x => x.name == "humn").First();
+            humanElement.dependsOnHuman = true;
+            while (!rootElement.hasValue)
+                DoRound();
+
+            // Now traverse from top down
+            var op1 = monkeys.Where(x => x.name == rootElement.firstOp).First();
+            var op2 = monkeys.Where(x => x.name == rootElement.secondOp).First();
+
+            var valueShouldBe = (op1.dependsOnHuman) ? op2.value : op1.value;
+            var currentNode = (op1.dependsOnHuman) ? op1 : op2;
+
+            while (currentNode != humanElement)
+                (currentNode, valueShouldBe) = TraverseDown(currentNode, valueShouldBe);
+
+            return valueShouldBe;
+        }
+
+        private long Yell()
         {
             var rootElement = monkeys.Where(x => x.name == "root").First();
             while (!rootElement.hasValue)
                 DoRound();
-
             return rootElement.value;
         }
+
+        public long Solve(int part = 1)
+            => (part == 1) ? Yell() : FindMatch();
     }
 }

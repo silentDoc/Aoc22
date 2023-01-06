@@ -45,3 +45,15 @@ Then, monkey  `sjmn`  has one of its numbers (`30`, from monkey  `drzm`), and al
 This process continues until  `root`  yells a number:  `_152_`.
 
 However, your actual situation involves  considerably more monkeys.  _What number will the monkey named  `root`  yell?_
+
+## --- Part Two ---
+
+Due to some kind of monkey-elephant-human mistranslation, you seem to have misunderstood a few key details about the riddle.
+
+First, you got the wrong job for the monkey named  `root`; specifically, you got the wrong math operation. The correct operation for monkey  `root`  should be  `=`, which means that it still listens for two numbers (from the same two monkeys as before), but now checks that the two numbers  _match_.
+
+Second, you got the wrong monkey for the job starting with  `humn:`. It isn't a monkey - it's  _you_. Actually, you got the job wrong, too: you need to figure out  _what number you need to yell_  so that  `root`'s equality check passes. (The number that appears after  `humn:`  in your input is now irrelevant.)
+
+In the above example, the number you need to yell to pass  `root`'s equality test is  `_301_`. (This causes  `root`  to get the same number,  `150`, from both of its monkeys.)
+
+_What number do you yell to pass  `root`'s equality test?_
