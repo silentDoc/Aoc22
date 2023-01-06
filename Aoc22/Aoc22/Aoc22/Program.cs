@@ -9,9 +9,9 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 21;
-            int part = 2;
-            bool test = false;   // True - test input, False = Real input
+            int day = 22;
+            int part = 1;
+            bool test = true;   // True - test input, False = Real input
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -42,6 +42,7 @@ namespace Aoc22
                 19 => day19(input, part).ToString(),
                 20 => day20(input, part).ToString(),
                 21 => day21(input, part).ToString(),
+                22 => day22(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -235,6 +236,12 @@ namespace Aoc22
             monkeyMath.ParseInput(lines);
             
             return monkeyMath.Solve(part);
+        }
+
+        static int day22(string input, int part)
+        {
+            List<string> lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
