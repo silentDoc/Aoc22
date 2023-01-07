@@ -160,9 +160,7 @@ namespace Aoc22.Day22
                 tile.Tile_Right = (tile.x < maxx) ? row.Where(t => t.x == tile.x + 1).First() : SolveWrap(tile, orientation_right);
                 tile.Tile_Left = (tile.x > minx) ? row.Where(t => t.x == tile.x - 1).First() : SolveWrap(tile, orientation_left);
             }
-            
         }
-        
 
         void ParseCommands(string strInput)
         {
@@ -238,7 +236,6 @@ namespace Aoc22.Day22
             nextOrientation = currentOrientation;
             return next;
         }
-       
 
         int Walk(int part)
         {

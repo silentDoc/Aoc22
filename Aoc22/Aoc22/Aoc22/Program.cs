@@ -9,8 +9,8 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 22;
-            int part = 2;
+            int day = 23;
+            int part = 1;
             bool test = false;   // True - test input, False = Real input
 
             string input;
@@ -251,7 +251,9 @@ namespace Aoc22
         static int day23(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day23.ElvenDiffusor diffusor = new();
+            diffusor.ParseInput(lines);
+            return diffusor.Solve();
         }
     }
 }
