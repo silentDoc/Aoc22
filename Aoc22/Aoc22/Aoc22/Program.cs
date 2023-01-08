@@ -10,7 +10,7 @@ namespace Aoc22
         static void Main()
         {
             int day = 24;
-            int part = 1;
+            int part = 2;
             bool test = false;   // True - test input, False = Real input
 
             string input;
@@ -262,7 +262,7 @@ namespace Aoc22
             List<string> lines = File.ReadAllLines(input).ToList();
             Day24.BlizzardNavigator nav = new();
             nav.ParseInput(lines);
-            return nav.Solve();
+            return nav.Solve(part);
         }
     }
 }

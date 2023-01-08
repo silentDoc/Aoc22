@@ -177,11 +177,11 @@ namespace Aoc22.Day24
             }
         }
 
-        int ShortestPath(Tile start, Tile end)
+        int ShortestPath(Tile start, Tile end, int initial_cost = 0)
         {
             Queue<(Tile pos, int cost)> priorityQueue = new();
             HashSet<(int x, int y, int cost)> visited = new();
-            priorityQueue.Enqueue((start, 0));
+            priorityQueue.Enqueue((start, initial_cost));
 
             while (priorityQueue.Count > 0)
             {
@@ -210,7 +210,7 @@ namespace Aoc22.Day24
             throw new Exception("Path does not exist");
         }
 
-        int Walk()
+        int Walk(int part = 1)
         {
             // Prepare all situations ahead
             int width = map.Max(t => t.x)+1;  
@@ -237,12 +237,17 @@ namespace Aoc22.Day24
             var start = map.Where(t => t.x == 1 && t.y == 0).First();
             var end = map.Where(t => t.x == width-2 && t.y == height-1).First();
 
-            return ShortestPath(start, end);
+            if(part == 1)
+                return ShortestPath(start, end);
+
+            var cost_1 = ShortestPath(start, end);
+            var cost_2 = ShortestPath(end, start, cost_1);
+            return ShortestPath(start, end, cost_2);
         }
 
 
         public int Solve(int part = 1)
-            => (part == 1) ? Walk() : 0;
+            => Walk(part);
 
     }
 }
