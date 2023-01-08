@@ -15,6 +15,7 @@ namespace Aoc22.Day23
 
         public int proposed_x;
         public int proposed_y;
+        public bool moved; 
     }
 
     internal class ElvenDiffusor
@@ -28,7 +29,7 @@ namespace Aoc22.Day23
             {
                 for (int xx = 0; xx < input[yy].Length; xx++)
                     if (input[yy][xx] == '#')
-                        elves.Add(new Elf() { x = xx, y = yy });
+                        elves.Add(new Elf() { x = xx, y = yy, moved = false });
             }
         }
 
@@ -70,7 +71,7 @@ namespace Aoc22.Day23
             elf.proposed_x = elf.x; // Does not move by default
             elf.proposed_y = elf.y;
 
-            if (neighbors.Count == 0)
+            if (neighbors.Count == 0)   // No move
             {
                 var k = (elf.proposed_x, elf.proposed_y);
                 proposals[k] = proposals.Keys.Contains(k) ? proposals[k] + 1 : 1;
@@ -95,9 +96,13 @@ namespace Aoc22.Day23
 
         void SecondHalf(Elf elf)
         {
+            elf.moved = false;
             var key = (elf.proposed_x, elf.proposed_y);
-            if (proposals[key] == 1)
+            
+            if (proposals[key] == 1)    // Only one proposal
             {
+                if (elf.x != elf.proposed_x || elf.y != elf.proposed_y) // It only moves if its position changes
+                    elf.moved = true;
                 elf.x = elf.proposed_x;
                 elf.y = elf.proposed_y;
             }
@@ -109,7 +114,6 @@ namespace Aoc22.Day23
         {
             for (int round = 0; round < rounds; round++)
             {
-                Trace.WriteLine(round.ToString());
                 proposals.Clear();
                 int firstDirection = round % 4;
                 foreach (Elf elf in elves)
@@ -125,7 +129,30 @@ namespace Aoc22.Day23
             return (width * height) - elves.Count;
         }
 
+        int Stabilize()
+        {
+            int round = 0;
+            int numMoved = 999;
+
+            while(numMoved!=0)
+            {
+                proposals.Clear();
+                int firstDirection = round % 4;
+                foreach (Elf elf in elves)
+                    FirstHalf(elf, firstDirection); // increments noMove for part 2
+
+                foreach (Elf elf in elves)
+                    SecondHalf(elf);
+
+                numMoved = elves.Where(e => e.moved).Count();
+
+                round++;
+            }
+
+            return round;
+        }
+
         public int Solve(int part = 1)
-            => part == 1 ? Diffuse(10) : 0;
+            => part == 1 ? Diffuse(10) : Stabilize();
     }
 }
