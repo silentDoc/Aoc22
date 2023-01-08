@@ -9,9 +9,9 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 24;
-            int part = 2;
-            bool test = false;   // True - test input, False = Real input
+            int day = 25;
+            int part = 1;
+            bool test = true;   // True - test input, False = Real input
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -45,6 +45,7 @@ namespace Aoc22
                 22 => day22(input, part).ToString(),
                 23 => day23(input, part).ToString(),
                 24 => day24(input, part).ToString(),
+                25 => day25(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -263,6 +264,12 @@ namespace Aoc22
             Day24.BlizzardNavigator nav = new();
             nav.ParseInput(lines);
             return nav.Solve(part);
+        }
+
+        static int day25(string input, int part)
+        {
+            List<string> lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
