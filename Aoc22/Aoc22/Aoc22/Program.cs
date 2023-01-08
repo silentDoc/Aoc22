@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Numerics;
-
+using System.Security.Principal;
 
 namespace Aoc22
 {
@@ -11,7 +11,7 @@ namespace Aoc22
         {
             int day = 24;
             int part = 1;
-            bool test = true;   // True - test input, False = Real input
+            bool test = false;   // True - test input, False = Real input
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -260,7 +260,9 @@ namespace Aoc22
         static int day24(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day24.BlizzardNavigator nav = new();
+            nav.ParseInput(lines);
+            return nav.Solve();
         }
     }
 }

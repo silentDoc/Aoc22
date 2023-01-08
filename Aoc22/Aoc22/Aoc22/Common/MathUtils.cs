@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Aoc22.Common
 {
-    static class MathUtils
+    public static class MathUtils
     {
-        static int GCD(int x, int y) 
+        public static int GCD(int x, int y) 
         {
             int gcd = 0;
             int a = Math.Max(x, y);
@@ -22,7 +22,7 @@ namespace Aoc22.Common
             return gcd;
         }
 
-        static int LCM(int x, int y)
+        public static int LCM(int x, int y)
         {
             int a = Math.Max(x, y);
             int b = Math.Min(x, y);
