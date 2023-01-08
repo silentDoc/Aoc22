@@ -9,9 +9,9 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 23;
-            int part = 2;
-            bool test = false;   // True - test input, False = Real input
+            int day = 24;
+            int part = 1;
+            bool test = true;   // True - test input, False = Real input
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -44,6 +44,7 @@ namespace Aoc22
                 21 => day21(input, part).ToString(),
                 22 => day22(input, part).ToString(),
                 23 => day23(input, part).ToString(),
+                24 => day24(input, part).ToString(),
                 _ => throw new ArgumentException("Wrong day number - unimplemented"),
             };
             Console.WriteLine("Result : {0}", strResult);
@@ -254,6 +255,12 @@ namespace Aoc22
             Day23.ElvenDiffusor diffusor = new();
             diffusor.ParseInput(lines);
             return diffusor.Solve(part);
+        }
+
+        static int day24(string input, int part)
+        {
+            List<string> lines = File.ReadAllLines(input).ToList();
+            return 0;
         }
     }
 }
