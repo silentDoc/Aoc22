@@ -11,7 +11,7 @@ namespace Aoc22
         {
             int day = 25;
             int part = 1;
-            bool test = true;   // True - test input, False = Real input
+            bool test = false;   // True - test input, False = Real input
 
             string input;
             input = "./Input/day" + day.ToString() + "_1";
@@ -266,10 +266,13 @@ namespace Aoc22
             return nav.Solve(part);
         }
 
-        static int day25(string input, int part)
+        static string day25(string input, int part)
         {
             List<string> lines = File.ReadAllLines(input).ToList();
-            return 0;
+            Day25.FuelManager fuel = new();
+            fuel.ParseInput(lines);
+
+            return fuel.Solve();
         }
     }
 }
