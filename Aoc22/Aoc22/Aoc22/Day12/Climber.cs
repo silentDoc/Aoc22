@@ -1,52 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using Aoc22.Day05;
+using Aoc22.Day24;
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-
-//
-// Standard breadth-first algorithm, starting from the goal node and walking backwards. 
-// I used a dictionary to represent valid coordinates, it's very handy when in need of
-// enumerating all coordinates or checking if we are stepping to valid location.
-//
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Aoc22.Day12
 {
-    class Solution 
+    record struct Coord(int lat, int lon);
+    record struct Symbol(char value);
+    record struct Elevation(char value);
+    record struct Poi(Symbol symbol, Elevation elevation, int distanceFromGoal);
+
+    public class Climber
     {
+        ImmutableDictionary<Coord, Symbol>? map;
+        
+        Symbol startSymbol = new('S');
+        Symbol goalSymbol = new('E');
+        Elevation lowestElevation = new('a');
+        Elevation highestElevation = new('z');
 
-        // I feel like a cartographer today
-        record struct Coord(int lat, int lon);
-
-        // we have two 'char' like things, let's introduce wrappers to keep them well separated in code
-        record struct Symbol(char value);
-        record struct Elevation(char value);
-
-        // locations on the map will be represented by the following structure of points-of-interests.
-        record struct Poi(Symbol symbol, Elevation elevation, int distanceFromGoal);
-
-        Symbol startSymbol = new Symbol('S');
-        Symbol goalSymbol = new Symbol('E');
-        Elevation lowestElevation = new Elevation('a');
-        Elevation highestElevation = new Elevation('z');
-
-        public object PartOne(string input) =>
-            GetPois(input)
+        public object ShortestPath() =>
+            SolveMap()
                 .Single(poi => poi.symbol == startSymbol)
                 .distanceFromGoal;
 
-        public object PartTwo(string input) =>
-            GetPois(input)
+        public object ClosestFlat() =>
+            SolveMap()
                 .Where(poi => poi.elevation == lowestElevation)
-                .Select(poi => poi.distanceFromGoal)
-                .Min();
+                .Min(poi => poi.distanceFromGoal);
 
-        IEnumerable<Poi> GetPois(string input)
+
+        public int Solve(int part = 1)
+            => (part == 1) ? (int)ShortestPath() : (int)ClosestFlat();
+
+
+        IEnumerable<Poi> SolveMap()
         {
-            var map = ParseMap(input);
+            if (map == null)
+                throw new Exception("Input has not been parsed");
+
             var goal = map.Keys.Single(point => map[point] == goalSymbol);
             var start = map.Keys.Single(point => map[point] == startSymbol);
 
-            // starting from the goal symbol compute shortest paths for each point of 
-            // the map using a breadth-first search.
+            // Starting from goal, find hortest paths for each point of 
+            // the map using BFS.
+
             var poiByCoord = new Dictionary<Coord, Poi>() {
                 {goal, new Poi(goalSymbol, GetElevation(goalSymbol), 0)}
             };
@@ -94,16 +97,13 @@ namespace Aoc22.Day12
 
         // locations are parsed into a dictionary so that valid coordinates and
         // neighbours are easy to deal with
-        ImmutableDictionary<Coord, Symbol> ParseMap(string input)
+        public void ParseInput(List<string> lines)
         {
-            var lines = input.Split("\n");
-            return (
-                from y in Enumerable.Range(0, lines.Length-1)
-                from x in Enumerable.Range(0, lines[0].Length)
-                select new KeyValuePair<Coord, Symbol>(
-                    new Coord(x, y), new Symbol(lines[y][x])
-                )
-            ).ToImmutableDictionary();
+             map = ( from y in Enumerable.Range(0, lines.Count - 1)
+                      from x in Enumerable.Range(0, lines[0].Length)
+                          select new KeyValuePair<Coord, Symbol>(
+                                       new Coord(x, y), new Symbol(lines[y][x]))
+                   ).ToImmutableDictionary();
         }
 
         IEnumerable<Coord> Neighbours(Coord coord) =>

@@ -9,8 +9,8 @@ namespace Aoc22
     {
         static void Main()
         {
-            int day = 25;
-            int part = 1;
+            int day = 12;
+            int part = 2;
             bool test = false;   // True - test input, False = Real input
 
             string input;
@@ -158,11 +158,9 @@ namespace Aoc22
         static int day12(string input, int part)
         {
             var lines = File.ReadLines(input).ToList();
-            Day12.HillClimbing hillClimb = new();
-            hillClimb.ParseMap(lines);
-            hillClimb.InvertMap();
-
-            return hillClimb.FindRoute();
+            Day12.Climber climber = new();
+            climber.ParseInput(lines);
+            return climber.Solve(part);
         }
 
         static int day13(string input, int part)
