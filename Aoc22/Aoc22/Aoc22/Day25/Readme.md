@@ -115,4 +115,7 @@ As you do, a very young Elf - one you recognize from the expedition team - appro
 
 Only  _49 stars_  to go.
 
-You don't have enough stars to fill the blender, though. You need 1 more.
+~~You don't have enough stars to fill the blender, though. You need 1 more.~~
+
+** If you like, you can [Start the Blender Again](https://adventofcode.com/2022/day/25/answer) ** 
+
